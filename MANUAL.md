@@ -2,9 +2,10 @@
 
 ![PacketBrawl Logo](PacketBrawl.png)
 
-### Gameplay Guide • Architecture Reference • Developer Documentation
+## Gameplay Guide • Architecture Reference • Developer Documentation
 
 <p align="center">
+  <a href="#-quick-start">Quick Start</a> •
   <a href="#-gameplay-guide">Gameplay</a> •
   <a href="#-character-abilities">Abilities</a> •
   <a href="#-strategy">Strategy</a> •
@@ -12,6 +13,55 @@
 </p>
 
 </div>
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **.NET 8.0+** installed
+- Windows, macOS, or Linux
+- 4 terminals (1 server + 3 clients)
+
+### Setup (5 Minutes)
+
+**1. Build**
+
+```bash
+dotnet build TerminalLanBattler.sln -c Release
+```
+
+**2. Run Server (Terminal 1)**
+
+```bash
+dotnet run --project src/TerminalLanBattler.Server -- --port 7777
+```
+
+**3. Run Clients (Terminals 2, 3, 4)**
+
+```bash
+# Terminal 2: Wizard
+dotnet run --project src/TerminalLanBattler.Client -- --host 127.0.0.1 --port 7777 --name "Alice" --class "Wizard"
+
+# Terminal 3: Knight
+dotnet run --project src/TerminalLanBattler.Client -- --host 127.0.0.1 --port 7777 --name "Bob" --class "Knight"
+
+# Terminal 4: Archer
+dotnet run --project src/TerminalLanBattler.Client -- --host 127.0.0.1 --port 7777 --name "Charlie" --class "Archer"
+```
+
+**4. Play!**
+
+- When 2+ players connect, match auto-starts
+- Follow on-screen prompts to take turns
+- Last player alive wins
+
+**5. Run Tests**
+
+```bash
+dotnet test TerminalLanBattler.sln -v normal
+```
 
 ---
 
@@ -31,6 +81,7 @@ Players (2/6):
 ```
 
 **Match Requirements:**
+
 - Minimum 2 players required
 - Maximum 6 players per match
 - Server auto-starts when min players reached
@@ -49,6 +100,7 @@ Actions: (1) Attack, (2) Ability, (3) Defend, (4) Skip
 **Action Options:**
 
 1. **Attack** (1)
+
    - Basic melee/ranged attack
    - Damage: Your Attack stat ± variance (-2 to +2)
    - No mana cost
@@ -56,12 +108,14 @@ Actions: (1) Attack, (2) Ability, (3) Defend, (4) Skip
    - Requires target selection
 
 2. **Ability** (2)
+
    - Class-specific special abilities
    - Costs mana (see ability tables below)
    - Has cooldown (cannot use until cooldown expires)
    - Choose ability, then select target
 
 3. **Defend** (3)
+
    - Gain +3 defense for this turn
    - Reduces next incoming damage
    - No mana cost
@@ -104,6 +158,7 @@ Players:
 ```
 
 **Information Shown:**
+
 - Turn number (increases each round)
 - Current player's turn indicator
 - All players' HP, mana, status (Alive/Dead)
@@ -117,13 +172,14 @@ Players:
 
 **Stats:** HP 40 | Mana 100 | Attack 6 | Defense 2 | Speed 7
 
-| Ability | Cost | CD | Effect | Details |
-|---------|------|----|---------| ---------|
-| **Fireball** | 30 | 1 | 20 single-target damage | Basic single-target DPS ability |
-| **Inferno** | 50 | 2 | 12 damage to ALL enemies | AoE damage, hits everyone except self |
-| **Arcane Shield** | 25 | 2 | Gain 15 shield points | Defensive shield, stacks with HP |
+| Ability           | Cost | CD  | Effect                   | Details                               |
+| ----------------- | ---- | --- | ------------------------ | ------------------------------------- |
+| **Fireball**      | 30   | 1   | 20 single-target damage  | Basic single-target DPS ability       |
+| **Inferno**       | 50   | 2   | 12 damage to ALL enemies | AoE damage, hits everyone except self |
+| **Arcane Shield** | 25   | 2   | Gain 15 shield points    | Defensive shield, stacks with HP      |
 
 **Strategy:**
+
 - High mana pool enables spell spam
 - Low HP makes you vulnerable
 - Focus on damage output
@@ -134,13 +190,14 @@ Players:
 
 **Stats:** HP 100 | Mana 50 | Attack 8 | Defense 6 | Speed 4
 
-| Ability | Cost | CD | Effect | Details |
-|---------|------|----|---------| ---------|
-| **Shield Bash** | 20 | 1 | 15 single-target damage | Melee attack with reduced cooldown |
-| **Guardian's Stance** | 30 | 3 | +8 defense for 2 turns | Defensive buff, reduces incoming damage |
-| **Taunt** | 25 | 2 | Force all enemies to target you | Takes aggro, protect allies |
+| Ability               | Cost | CD  | Effect                          | Details                                 |
+| --------------------- | ---- | --- | ------------------------------- | --------------------------------------- |
+| **Shield Bash**       | 20   | 1   | 15 single-target damage         | Melee attack with reduced cooldown      |
+| **Guardian's Stance** | 30   | 3   | +8 defense for 2 turns          | Defensive buff, reduces incoming damage |
+| **Taunt**             | 25   | 2   | Force all enemies to target you | Takes aggro, protect allies             |
 
 **Strategy:**
+
 - Highest HP (100) absorbs damage
 - Tank for team
 - Use Taunt to protect vulnerable allies
@@ -151,13 +208,14 @@ Players:
 
 **Stats:** HP 60 | Mana 70 | Attack 10 | Defense 3 | Speed 8
 
-| Ability | Cost | CD | Effect | Details |
-|---------|------|----|---------| ---------|
-| **Quick Shot** | 15 | 1 | 12 single-target damage | Fast, low cost ability |
-| **Piercing Arrow** | 35 | 2 | 18 single-target damage | High damage, medium cost |
-| **Mark Target** | 20 | 2 | Mark target for 2 turns | Debuff: allies gain +3 damage vs marked |
+| Ability            | Cost | CD  | Effect                  | Details                                 |
+| ------------------ | ---- | --- | ----------------------- | --------------------------------------- |
+| **Quick Shot**     | 15   | 1   | 12 single-target damage | Fast, low cost ability                  |
+| **Piercing Arrow** | 35   | 2   | 18 single-target damage | High damage, medium cost                |
+| **Mark Target**    | 20   | 2   | Mark target for 2 turns | Debuff: allies gain +3 damage vs marked |
 
 **Strategy:**
+
 - High speed (8) means you go early
 - Medium HP, medium mana
 - Use Quick Shot for sustained DPS
@@ -168,13 +226,14 @@ Players:
 
 **Stats:** HP 55 | Mana 60 | Attack 12 | Defense 2 | Speed 9
 
-| Ability | Cost | CD | Effect | Details |
-|---------|------|----|---------| ---------|
-| **Backstab** | 15 | 1 | 14 single-target damage | Fast combo ability |
-| **Assassination** | 40 | 3 | 25 single-target damage | Burst damage, long cooldown |
-| **Shadow Dance** | 30 | 3 | Gain evasion for 2 turns | Defensive buff, +2 speed |
+| Ability           | Cost | CD  | Effect                   | Details                     |
+| ----------------- | ---- | --- | ------------------------ | --------------------------- |
+| **Backstab**      | 15   | 1   | 14 single-target damage  | Fast combo ability          |
+| **Assassination** | 40   | 3   | 25 single-target damage  | Burst damage, long cooldown |
+| **Shadow Dance**  | 30   | 3   | Gain evasion for 2 turns | Defensive buff, +2 speed    |
 
 **Strategy:**
+
 - Fastest character (Speed 9)
 - Highest attack (12)
 - Backsta for sustained combo
@@ -187,26 +246,29 @@ Players:
 
 ### Class Matchups
 
-| Matchup | Winner | Why |
-|---------|--------|-----|
-| **Wizard vs Knight** | Knight | Tanky, can absorb spells |
-| **Knight vs Archer** | Archer | Archer faster, kites Knight |
-| **Archer vs Rogue** | Rogue | Rogue faster, burst damage |
-| **Rogue vs Wizard** | Wizard | Wizard AoE hits mobile Rogue |
+| Matchup              | Winner | Why                          |
+| -------------------- | ------ | ---------------------------- |
+| **Wizard vs Knight** | Knight | Tanky, can absorb spells     |
+| **Knight vs Archer** | Archer | Archer faster, kites Knight  |
+| **Archer vs Rogue**  | Rogue  | Rogue faster, burst damage   |
+| **Rogue vs Wizard**  | Wizard | Wizard AoE hits mobile Rogue |
 
 ### Team Strategies
 
 **2 Players:**
+
 - Focus fire priority targets
 - Use debuffs to soften defenses
 - Manage mana carefully (no support)
 
 **3 Players:**
+
 - Knight tanks, Archer marks, Wizard/Rogue DPS
 - Rotate defensives to stay alive
 - Predict team comp threats
 
 **4+ Players:**
+
 - Tank leads with Taunt
 - Multiple DPS focus marked targets
 - Support with shields and healing
@@ -229,12 +291,12 @@ Players:
 
 ### Cooldown Awareness
 
-| Ability | Cooldown | Frequency |
-|---------|----------|-----------|
-| Basic Attack | 0 | Every turn |
-| 1-Turn CD | 1 turn | Every other turn |
-| 2-Turn CD | 2 turns | Every 3 turns |
-| 3-Turn CD | 3 turns | Every 4 turns |
+| Ability      | Cooldown | Frequency        |
+| ------------ | -------- | ---------------- |
+| Basic Attack | 0        | Every turn       |
+| 1-Turn CD    | 1 turn   | Every other turn |
+| 2-Turn CD    | 2 turns  | Every 3 turns    |
+| 3-Turn CD    | 3 turns  | Every 4 turns    |
 
 ### Damage Calculation
 
@@ -246,6 +308,7 @@ Final = Max(0, Actual - Shield)
 ```
 
 **Examples:**
+
 - Attack 10 vs Defense 6: 10 + 1 - 3 = 8 damage
 - Attack 6 vs Shield 15: Shield absorbs all, 0 HP damage
 - Minimum damage: 1 (even heavily armored)
@@ -257,6 +320,7 @@ Final = Max(0, Actual - Shield)
 ### Setup (3-Player Match)
 
 **Terminal 1: Server**
+
 ```bash
 $ dotnet run --project src/TerminalLanBattler.Server -- --port 7777
 Starting TerminalLanBattler Server on 0.0.0.0:7777
@@ -265,6 +329,7 @@ Starting TerminalLanBattler Server on 0.0.0.0:7777
 ```
 
 **Terminal 2: Player 1 (Alice, Wizard)**
+
 ```bash
 $ dotnet run --project src/TerminalLanBattler.Client -- --host 127.0.0.1 --port 7777 --name "Alice" --class "Wizard"
 Connecting to 127.0.0.1:7777 as Alice (Wizard)
@@ -276,6 +341,7 @@ Players (1/6):
 ```
 
 **Terminal 3: Player 2 (Bob, Knight)**
+
 ```bash
 $ dotnet run --project src/TerminalLanBattler.Client -- --host 127.0.0.1 --port 7777 --name "Bob" --class "Knight"
 [Client] Connected. Player ID: b2c3d4e5-f6g7-48h9-i0j1
@@ -287,6 +353,7 @@ Players (2/6):
 ```
 
 **Terminal 4: Player 3 (Charlie, Archer)**
+
 ```bash
 $ dotnet run --project src/TerminalLanBattler.Client -- --host 127.0.0.1 --port 7777 --name "Charlie" --class "Archer"
 [Client] Connected. Player ID: c3d4e5f6-g7h8-49i0-j1k2
@@ -299,6 +366,7 @@ Players (3/6):
 ```
 
 **Server Output:**
+
 ```
 [Server] Player Alice (a1b2c3d4...) connected as Wizard
 [Server] Player Bob (b2c3d4e5...) connected as Knight
@@ -343,6 +411,7 @@ Select target:
 ```
 
 **Server:**
+
 ```
 [Game] Charlie cast Quick Shot on Alice for 12 damage.
 ```
@@ -380,6 +449,7 @@ Select target:
 ```
 
 **Server:**
+
 ```
 [Game] Alice cast Fireball on Charlie for 20 damage.
 ```
@@ -411,11 +481,13 @@ Select target:
 ```
 
 **Server:**
+
 ```
 [Game] Bob attacked Alice for 8 damage.
 ```
 
 **Round 1 End:**
+
 ```
 === GAME STATE ===
 Turn: 1
@@ -449,6 +521,7 @@ Match is over. Type 'q' to quit.
 ### Network Protocol
 
 **Message Format:**
+
 - Single line of valid JSON
 - Newline (`\n`) separates messages
 - Max payload: 1 MB (validated)
@@ -456,20 +529,20 @@ Match is over. Type 'q' to quit.
 
 **Message Types (13 Total):**
 
-| Type | Direction | Purpose |
-|------|-----------|---------|
-| Connect | C→S | Initiate connection |
-| ConnectResponse | S→C | Confirm connection, assign ID |
-| JoinLobby | C→S | Ready to play |
-| LobbyState | S→C | Lobby status broadcast |
-| StartMatch | S→C | Match begins, initial state |
-| PlayerAction | C→S | Send chosen action |
-| StateUpdate | S→C | Updated game state broadcast |
-| MatchResult | S→C | Final winner + rankings |
-| Heartbeat | ↔ | Keep-alive ping (5 sec interval) |
-| ReconnectAttempt | C→S | Rejoin after disconnect |
-| ReconnectResponse | S→C | Reconnection status |
-| Error | S→C | Error notification |
+| Type              | Direction | Purpose                          |
+| ----------------- | --------- | -------------------------------- |
+| Connect           | C→S       | Initiate connection              |
+| ConnectResponse   | S→C       | Confirm connection, assign ID    |
+| JoinLobby         | C→S       | Ready to play                    |
+| LobbyState        | S→C       | Lobby status broadcast           |
+| StartMatch        | S→C       | Match begins, initial state      |
+| PlayerAction      | C→S       | Send chosen action               |
+| StateUpdate       | S→C       | Updated game state broadcast     |
+| MatchResult       | S→C       | Final winner + rankings          |
+| Heartbeat         | ↔         | Keep-alive ping (5 sec interval) |
+| ReconnectAttempt  | C→S       | Rejoin after disconnect          |
+| ReconnectResponse | S→C       | Reconnection status              |
+| Error             | S→C       | Error notification               |
 
 ### Server-Authoritative Design
 
@@ -515,7 +588,7 @@ Sent via `StateUpdate` message:
       "speed": 7,
       "isAlive": true,
       "shieldValue": 0,
-      "abilityCooldowns": {"Fireball": 0, "Inferno": 2, "Arcane Shield": 1}
+      "abilityCooldowns": { "Fireball": 0, "Inferno": 2, "Arcane Shield": 1 }
     }
   ],
   "turnIndex": 5,
@@ -554,6 +627,7 @@ src/
 ### Adding a New Character Class
 
 **Step 1:** Create in `CharacterClass.cs`
+
 ```csharp
 public class PaladinClass : CharacterClass
 {
@@ -590,6 +664,7 @@ public class PaladinClass : CharacterClass
 ```
 
 **Step 2:** Register in `Get()` and `GetAllClassNames()`
+
 ```csharp
 public static CharacterClass Get(string className)
 {
@@ -609,6 +684,7 @@ public static List<string> GetAllClassNames() =>
 ```
 
 **Step 3:** Test
+
 ```csharp
 [Fact]
 public void Test_PaladinAbilities()
@@ -635,13 +711,13 @@ Edit `appsettings.json`:
 ```json
 {
   "server": {
-    "port": 7777,           // TCP port
+    "port": 7777, // TCP port
     "bindAddress": "0.0.0.0", // All interfaces
-    "heartbeatIntervalMs": 5000,  // Ping every 5 sec
-    "heartbeatTimeoutSec": 15,    // Disconnect after 15 sec silence
-    "reconnectWindowSec": 30,     // Allow rejoin within 30 sec
-    "minPlayersForMatch": 2,      // Minimum players
-    "maxPlayersInMatch": 6        // Maximum players
+    "heartbeatIntervalMs": 5000, // Ping every 5 sec
+    "heartbeatTimeoutSec": 15, // Disconnect after 15 sec silence
+    "reconnectWindowSec": 30, // Allow rejoin within 30 sec
+    "minPlayersForMatch": 2, // Minimum players
+    "maxPlayersInMatch": 6 // Maximum players
   }
 }
 ```
@@ -649,12 +725,14 @@ Edit `appsettings.json`:
 ### Thread Safety
 
 **Protected Resources:**
+
 - `_gameStateLock`: Protects `GameState` mutations
 - `_lobbyLock`: Protects lobby player set
 - `_connections`: `ConcurrentDictionary` (thread-safe)
 - `ClientConnection._writeSemaphore`: Serializes TCP writes
 
 **Async/Await:**
+
 - All I/O uses `async/await`
 - `CancellationToken` for graceful shutdown
 - No blocking calls in server threads
@@ -662,12 +740,14 @@ Edit `appsettings.json`:
 ### Performance
 
 **Current:**
+
 - ~4,500 lines production code
 - ~500 lines test code
 - Full state snapshots (no delta compression)
 - Simple locks on shared state
 
 **Optimize:**
+
 1. **Delta compression:** Only send changed fields
 2. **Client-side prediction:** Optimistic UI updates
 3. **Batch updates:** Multiple turns → one broadcast
@@ -675,35 +755,94 @@ Edit `appsettings.json`:
 
 ### Troubleshooting
 
-| Issue | Root Cause | Fix |
-|-------|-----------|-----|
-| Port in use | Another process using port | `--port 8888` |
-| Connection refused | Server not running/firewall | Check server, firewall |
-| Tests fail | Missing packages/build | `dotnet clean && dotnet build` |
-| JSON error | Invalid message format | Verify `messageType` |
-| Desync | Client modifying state | Review StateUpdate handling |
-| High latency | Network/CPU bottleneck | Profile with `dotnet trace` |
+| Issue              | Root Cause                  | Fix                            |
+| ------------------ | --------------------------- | ------------------------------ |
+| Port in use        | Another process using port  | `--port 8888`                  |
+| Connection refused | Server not running/firewall | Check server, firewall         |
+| Tests fail         | Missing packages/build      | `dotnet clean && dotnet build` |
+| JSON error         | Invalid message format      | Verify `messageType`           |
+| Desync             | Client modifying state      | Review StateUpdate handling    |
+| High latency       | Network/CPU bottleneck      | Profile with `dotnet trace`    |
 
 ### Debugging Tips
 
 **Enable Logging:**
+
 ```csharp
 // In GameServer.cs
 Console.WriteLine($"[DEBUG] Processing action: {actionMsg.ActionType}");
 ```
 
 **Profiling:**
+
 ```bash
 dotnet trace collect --duration 30 -- dotnet run --project src/TerminalLanBattler.Server
 # Analyze with PerfView or speedscope
 ```
 
 **Monitoring:**
+
 ```bash
 # Check server CPU/memory
 top  # Linux/macOS
 # Task Manager  # Windows
 ```
+
+---
+
+## 📚 Quick Reference
+
+### Command Reference
+
+| Command                                                                                                              | Purpose                                    |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `dotnet build TerminalLanBattler.sln -c Release`                                                                     | Compile all projects                       |
+| `dotnet test TerminalLanBattler.sln -v normal`                                                                       | Run 16 unit tests                          |
+| `dotnet clean`                                                                                                       | Remove build artifacts                     |
+| `dotnet restore`                                                                                                     | Download NuGet packages                    |
+| `dotnet run --project src/TerminalLanBattler.Server -- --port 7777`                                                  | Start server on port 7777                  |
+| `dotnet run --project src/TerminalLanBattler.Server -- --port 8888`                                                  | Start server on port 8888 (if 7777 in use) |
+| `dotnet run --project src/TerminalLanBattler.Client -- --host 127.0.0.1 --port 7777 --name "Alice" --class "Wizard"` | Connect as Wizard                          |
+
+### Project Structure at a Glance
+
+```
+src/
+├── TerminalLanBattler.Shared/    (Core logic)
+│   ├── Messages/                 (13 message types)
+│   ├── Game/                     (Game state, actions, classes)
+│   └── Serialization/            (JSON handling)
+├── TerminalLanBattler.Server/    (Game server)
+│   ├── GameServer.cs             (Main orchestrator)
+│   └── Program.cs                (Entry point)
+└── TerminalLanBattler.Client/    (Terminal UI)
+    ├── GameClient.cs             (Client logic)
+    └── Program.cs                (Entry point)
+tests/
+└── TerminalLanBattler.Tests/     (16 unit tests)
+```
+
+### Common Issues & Fixes
+
+| Problem                    | Solution                                                     |
+| -------------------------- | ------------------------------------------------------------ |
+| Port 7777 already in use   | Use `--port 8888` instead                                    |
+| Connection refused         | Ensure server is running, check firewall                     |
+| Build fails                | Run `dotnet clean && dotnet restore && dotnet build`         |
+| Tests fail                 | Ensure .NET 8.0+, run `dotnet restore` first                 |
+| JSON/Deserialization error | Verify message format and `messageType` field case           |
+| High latency/freezing      | Check network connection, CPU usage, or run on same machine  |
+| Client disconnects         | May be within reconnection window (30 sec), will auto-rejoin |
+
+### Game Features Summary
+
+- **4 Hero Classes:** Wizard, Knight, Archer, Rogue (3+ unique abilities each)
+- **Turn-Based Combat:** Speed-based initiative, deterministic turn order
+- **Resource Management:** Mana pools, cooldowns, shields
+- **Server-Authoritative:** All validation & game logic on server (no cheating)
+- **TCP/JSON Networking:** Line-delimited messages, heartbeat detection, reconnection support
+- **Fully Tested:** 16 unit tests covering game logic and serialization
+- **Thread-Safe:** Proper synchronization, async/await throughout
 
 ---
 
