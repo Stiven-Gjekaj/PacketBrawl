@@ -1,6 +1,6 @@
 <div align="center">
 
-# TerminalLanBattler — Complete Manual
+![PacketBrawl Logo](PacketBrawl.png)
 
 ### Gameplay Guide • Architecture Reference • Developer Documentation
 
@@ -8,9 +8,7 @@
   <a href="#-gameplay-guide">Gameplay</a> •
   <a href="#-character-abilities">Abilities</a> •
   <a href="#-strategy">Strategy</a> •
-  <a href="#-sample-transcript">Example</a> •
-  <a href="#-architecture">Architecture</a> •
-  <a href="#-developer-guide">Dev Guide</a>
+  <a href="#-architecture">Architecture</a>
 </p>
 
 </div>
@@ -745,6 +743,6 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**Questions? See [README.md](README.md) for quick start & architecture overview.**
+**See [README.md](README.md) for quick start & architecture overview.**
 
 </div>
