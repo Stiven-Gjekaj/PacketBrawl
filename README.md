@@ -2,8 +2,6 @@
 
 ![PacketBrawl Logo](PacketBrawl.png)
 
-# TerminalLanBattler
-
 ### A Turn-Based LAN Multiplayer Battler
 
 _Server-authoritative gameplay: TCP/JSON networking, 4 hero classes, strategic battles_
@@ -311,34 +309,6 @@ Register in `GetAllClassNames()` and `Get()` switch. Add tests. Done!
 
 ---
 
-## Architecture
-
-**Server-Authoritative Design:**
-- Client sends action
-- Server validates (turn, mana, cooldown)
-- Server applies effect
-- Server broadcasts new state
-- All clients update view
-
-This prevents desync and cheating.
-
----
-
-## ✅ Meets All Requirements
-
-✅ Turn-based LAN multiplayer (2–6 players, TCP/IP)
-✅ 4 character classes (Wizard, Knight, Archer, Rogue)
-✅ 3+ unique abilities per class (cooldowns, mana costs)
-✅ Server-authoritative game state
-✅ Robust networking (heartbeat, reconnection, validation)
-✅ 16 comprehensive unit tests
-✅ ~4,500 lines production code
-✅ Complete documentation
-✅ CI/CD ready (GitHub Actions)
-✅ MIT License (open source)
-
----
-
 ## 📄 License
 
 MIT License - See [LICENSE](LICENSE) for details.
@@ -348,7 +318,5 @@ MIT License - See [LICENSE](LICENSE) for details.
 <div align="center">
 
 **Ready to battle?** 🎮⚔️
-
-Launch the server, invite friends, let the games begin!
 
 </div>
