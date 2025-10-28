@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "dgSpecHash": "IwxOfMaipq0=",
+  "success": false,
+  "projectFilePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\src\\TerminalLanBattler.Shared\\TerminalLanBattler.Shared.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'Microsoft.NETCore.App.Ref (= 8.0.20)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\src\\TerminalLanBattler.Shared\\TerminalLanBattler.Shared.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\src\\TerminalLanBattler.Shared\\TerminalLanBattler.Shared.csproj",
+      "libraryId": "Microsoft.NETCore.App.Ref",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'Microsoft.WindowsDesktop.App.Ref (= 8.0.20)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\src\\TerminalLanBattler.Shared\\TerminalLanBattler.Shared.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\src\\TerminalLanBattler.Shared\\TerminalLanBattler.Shared.csproj",
+      "libraryId": "Microsoft.WindowsDesktop.App.Ref",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'Microsoft.AspNetCore.App.Ref (= 8.0.20)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\src\\TerminalLanBattler.Shared\\TerminalLanBattler.Shared.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\src\\TerminalLanBattler.Shared\\TerminalLanBattler.Shared.csproj",
+      "libraryId": "Microsoft.AspNetCore.App.Ref",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}

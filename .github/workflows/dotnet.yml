@@ -1,0 +1,58 @@
+name: .NET Build & Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        dotnet-version: ['8.0.x']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+
+    - name: Restore dependencies
+      run: dotnet restore TerminalLanBattler.sln
+
+    - name: Build
+      run: dotnet build TerminalLanBattler.sln --no-restore --configuration Release
+
+    - name: Run Unit Tests
+      run: dotnet test TerminalLanBattler.sln --no-build --configuration Release --verbosity normal --logger "console;verbosity=normal"
+
+    - name: Run Unit Tests with Coverage (optional)
+      run: dotnet test TerminalLanBattler.sln --no-build --configuration Release --logger "trx" --collect:"XPlat Code Coverage"
+      continue-on-error: true
+
+  lint-and-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install StyleCop Analyzers (optional)
+      run: dotnet add src/TerminalLanBattler.Shared/TerminalLanBattler.Shared.csproj package StyleCop.Analyzers
+      continue-on-error: true
+
+    - name: Restore dependencies
+      run: dotnet restore TerminalLanBattler.sln
+
+    - name: Check for compilation warnings
+      run: dotnet build TerminalLanBattler.sln --configuration Release /p:TreatWarningsAsErrors=false
+      continue-on-error: true

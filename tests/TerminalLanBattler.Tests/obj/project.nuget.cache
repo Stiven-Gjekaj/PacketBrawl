@@ -1,0 +1,75 @@
+{
+  "version": 2,
+  "dgSpecHash": "Aqe0hb0zlaY=",
+  "success": false,
+  "projectFilePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'Microsoft.NET.Test.Sdk (>= 17.8.0)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "libraryId": "Microsoft.NET.Test.Sdk",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'xunit (>= 2.6.2)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "libraryId": "xunit",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'xunit.runner.visualstudio (>= 2.5.1)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "libraryId": "xunit.runner.visualstudio",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'Microsoft.NETCore.App.Ref (= 8.0.20)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "libraryId": "Microsoft.NETCore.App.Ref",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'Microsoft.WindowsDesktop.App.Ref (= 8.0.20)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "libraryId": "Microsoft.WindowsDesktop.App.Ref",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Unable to resolve 'Microsoft.AspNetCore.App.Ref (= 8.0.20)' for 'net8.0'.",
+      "projectPath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "filePath": "C:\\Users\\stive\\Desktop\\stuff\\code\\PacketBrawl\\tests\\TerminalLanBattler.Tests\\TerminalLanBattler.Tests.csproj",
+      "libraryId": "Microsoft.AspNetCore.App.Ref",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}
