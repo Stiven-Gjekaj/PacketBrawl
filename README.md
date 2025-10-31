@@ -2,7 +2,7 @@
 
 ![PacketBrawl Logo](PacketBrawl.png)
 
-## A Turn-Based LAN Multiplayer Battler
+## A Turn-Based LAN Battler
 
 _Server-authoritative gameplay: TCP/JSON networking, 4 hero classes, strategic battles_
 
