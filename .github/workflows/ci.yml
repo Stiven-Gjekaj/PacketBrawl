@@ -6,6 +6,20 @@ on:
   pull_request:
 
 jobs:
+  # This runs apart from the build because it needs no Node and no install,
+  # so it answers in seconds. Every document here opens with an HTML header
+  # holding the wordmark, and a check that read only Markdown links would
+  # report success while every logo was broken. This one reads both.
+  docs:
+    name: Check the documentation links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+
+      - name: Check that every relative link resolves
+        run: bash scripts/check-links.sh
+
   verify:
     name: Lint, type check, and test
     runs-on: ubuntu-latest
