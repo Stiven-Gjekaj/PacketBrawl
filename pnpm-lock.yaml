@@ -18,6 +18,8 @@ importers:
         specifier: ^4.1.10
         version: 4.1.10(vite@8.2.1)
 
+  packages/sim: {}
+
 packages:
 
   '@biomejs/biome@2.5.8':

@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Nothing imports this package yet, so it emits nothing and is checked
+    // only. The declaration settings in the base file are turned off here
+    // because TypeScript refuses to emit declarations and emit nothing at the
+    // same time. Turn them back on when apps/web needs a built package.
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+
+    // Imports inside this package name the .ts file they mean. That is what
+    // lets Node run the sources directly with its own type stripping, which
+    // is how the package is checked without a bundler standing in the way.
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src/**/*", "test/**/*"]
+}
