@@ -152,4 +152,10 @@ in this repository is written, and who signs a commit.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+**PacketBrawl is not open source.** Copyright (c) 2025-2026 Stiven Gjekaj, all
+rights reserved. See [LICENSE](LICENSE).
+
+You may read this source and fork it inside GitHub, because GitHub's Terms of
+Service give every GitHub user that right. You may not use, copy, modify, or
+distribute it without written permission. Reading the source grants you no
+licence to it.

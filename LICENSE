@@ -1,21 +1,35 @@
-MIT License
+PacketBrawl
 
-Copyright (c) 2025 Stiven Gjekaj
+Copyright (c) 2025-2026 Stiven Gjekaj. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software, its source code, its documentation, its artwork, and its
+written content are the property of the copyright holder.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+No permission is granted to any person to use, copy, modify, adapt, merge,
+publish, distribute, sublicense, or sell any part of this work, in source form
+or in compiled form, except with the written permission of the copyright
+holder.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+No permission is granted to train a machine learning model on this work.
+
+This is not open source software. The source is readable, which is not the
+same as free to use.
+
+WHAT GITHUB ALLOWS
+
+This repository is public on GitHub. GitHub's Terms of Service give every
+GitHub user the right to view this repository and to fork it within GitHub.
+That right comes from those terms and not from this licence, and this licence
+does not try to take it away. It grants nothing beyond it.
+
+NO WARRANTY
+
+The work is provided "as is", without warranty of any kind, express or
+implied. This includes the warranties of merchantability, fitness for a
+particular purpose, and noninfringement. To the maximum extent that the law
+allows, the copyright holder is not liable for any claim, damages, or other
+liability arising from the work or from its use.
+
+CONTACT
+
+To ask for permission, email stivenagostingjekaj@gmail.com.
