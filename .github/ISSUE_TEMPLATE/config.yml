@@ -1,0 +1,18 @@
+# The two templates above are the only kinds of issue this repository wants.
+# A security problem is not one of them, so it is sent somewhere private
+# instead. A vulnerability filed in a public issue is disclosed the moment it
+# is filed, and no reply can undo that.
+blank_issues_enabled: false
+
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/Stiven-Gjekaj/PacketBrawl/security/advisories/new
+    about: Report a vulnerability privately. Never in a public issue.
+
+  - name: Ask for help
+    url: https://github.com/Stiven-Gjekaj/PacketBrawl/blob/main/SUPPORT.md
+    about: How to run what exists, and what to include when you ask.
+
+  - name: Ask for permission to use the code
+    url: https://github.com/Stiven-Gjekaj/PacketBrawl/blob/main/LICENSE
+    about: PacketBrawl is not open source. Reading it grants no licence to it.
