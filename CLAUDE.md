@@ -1,3 +1,7 @@
+<div align="center">
+  <a href="README.md"><img src="PacketBrawl.svg" alt="PacketBrawl" width="420"></a>
+</div>
+
 # CLAUDE.md
 
 See [AGENTS.md](AGENTS.md).

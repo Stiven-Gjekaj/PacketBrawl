@@ -1,3 +1,7 @@
+<div align="center">
+  <a href="README.md"><img src="PacketBrawl.svg" alt="PacketBrawl" width="420"></a>
+</div>
+
 # AGENTS.md
 
 These are the rules for anyone who does work in this repository, human or

@@ -1,3 +1,7 @@
+<div align="center">
+  <a href="README.md"><img src="PacketBrawl.svg" alt="PacketBrawl" width="420"></a>
+</div>
+
 # Changelog
 
 Every notable change to PacketBrawl.
