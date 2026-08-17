@@ -123,8 +123,11 @@ PacketBrawl/
 │       ├── src/
 │       └── test/
 ├── docs/
+│   ├── architecture.md   how the pieces fit, and why
 │   └── milestones.md     the build order, and what changed from the spec
-└── .github/workflows/    lint, type check, test
+├── scripts/
+│   └── check-links.sh    every relative link in every document
+└── .github/workflows/    lint, type check, test, CodeQL
 ```
 
 `apps/web`, `packages/content`, and `packages/bot` do not exist yet. They
