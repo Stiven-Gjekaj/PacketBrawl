@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    "strict": true,
+
+    // The four settings below are not part of `strict`, and each one closes a
+    // hole that a rules engine falls into.
+    //
+    // noUncheckedIndexedAccess: reading squad[3] of a three unit squad gives
+    // undefined at run time. Without this, the type says the unit is there.
+    // exactOptionalPropertyTypes: an absent field and a field set to undefined
+    // are different states, and a state hash has to tell them apart.
+    // noImplicitOverride: a subclass that renames a method it meant to
+    // override silently stops overriding it.
+    // noFallthroughCasesInSwitch: commands are resolved by a switch over the
+    // command kind, and a missing break resolves two commands for one.
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  }
+}
