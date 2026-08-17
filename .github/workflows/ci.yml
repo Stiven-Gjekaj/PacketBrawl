@@ -34,7 +34,7 @@ jobs:
       # Two places that name a version drift apart, and the one that is wrong
       # is always the one nobody reads.
       - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
