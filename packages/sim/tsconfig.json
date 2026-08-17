@@ -13,7 +13,16 @@
     // Imports inside this package name the .ts file they mean. That is what
     // lets Node run the sources directly with its own type stripping, which
     // is how the package is checked without a bundler standing in the way.
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+
+    // No ambient types at all, and a lib with nothing host specific in it.
+    //
+    // This is the architectural rule made structural. The tests need Node to
+    // read files off disk, so they are a separate project with Node types.
+    // Here there are none, which means `process`, `Buffer`, and `document`
+    // are not merely discouraged in the rules engine, they do not compile.
+    // A boundary a test checks can be argued with. This one cannot.
+    "types": []
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/**/*"]
 }

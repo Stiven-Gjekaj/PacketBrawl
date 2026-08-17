@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "allowImportingTsExtensions": true,
+
+    // The tests are allowed what the sources are not. One of them reads the
+    // source files off disk to check that the sources import nothing, and
+    // that check needs the very module the sources may not have.
+    "types": ["node"]
+  },
+  "include": ["test/**/*"]
+}
