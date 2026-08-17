@@ -32,6 +32,15 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   being installed.
 - `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `TERMS.md`, and
   `CODE_OF_CONDUCT.md`.
+- [docs/architecture.md](docs/architecture.md), which says how the pieces fit
+  and why each decision was taken.
+- Issue and pull request templates. A bug report asks for the starting
+  options, the commands, and the state hash, which reproduce a rules problem
+  exactly.
+- A link check over every document, reading Markdown links, `img src`, and
+  `a href`. It runs in CI.
+- CodeQL analysis, weekly and on every push to the default branch.
+- Dependabot for the toolchain and for the actions.
 
 ### Changed
 
