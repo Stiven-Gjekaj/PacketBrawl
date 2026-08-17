@@ -1,0 +1,31 @@
+# Line endings in the files that the tests read.
+#
+# The sim hashes a state and compares the string against a recorded one. A
+# Windows checkout converts a text file to CRLF by default. That conversion
+# changes the bytes, so a recorded hash stops matching, and the failure looks
+# like a defect in the hash rather than a setting in the checkout.
+#
+# Pin the text files to LF on every platform. This is not a preference about
+# editors. It is the condition under which the tests mean anything on Windows.
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.svg text eol=lf
+*.sql text eol=lf
+
+# Binary, and never converted.
+#
+# A line ending conversion corrupts each of these in silence.
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.woff2 binary

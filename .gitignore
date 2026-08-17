@@ -1,0 +1,23 @@
+# Dependencies.
+node_modules/
+
+# Build output.
+dist/
+out/
+.next/
+*.tsbuildinfo
+
+# Test output.
+coverage/
+
+# Secrets. The example file is committed. The real one never is.
+.env
+.env.*
+!.env.example
+
+# Deployment.
+.vercel/
+
+# Editors and operating systems.
+.DS_Store
+*.swp
