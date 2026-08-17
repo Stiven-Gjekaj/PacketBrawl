@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  verify:
+    name: Lint, type check, and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      # The version comes from .nvmrc rather than being written here twice.
+      # Two places that name a version drift apart, and the one that is wrong
+      # is always the one nobody reads.
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # --frozen-lockfile fails rather than quietly rewriting the lockfile, so
+      # a dependency that was added without committing the lockfile is caught
+      # here instead of on the machine of whoever clones the repository next.
+      - name: Install the dependencies
+        run: pnpm install --frozen-lockfile
+
+      # These are the same three commands `pnpm verify` runs, listed apart so
+      # that a failure names which one failed on the job's own summary rather
+      # than in the middle of a log.
+      - name: Lint and check formatting
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm typecheck
+
+      # The rules engine needs no browser, which is the whole reason it is
+      # kept separate from anything that draws it.
+      - name: Test
+        run: pnpm test
