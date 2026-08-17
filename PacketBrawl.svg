@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1044 180" width="1044" height="180" role="img" aria-label="PacketBrawl">
+  <title>PacketBrawl</title>
+
+  <defs>
+    <!-- Phosphor green through to a gold that the terminal has no business
+         having. That shift is the whole brief: a terminal, enchanted. -->
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="0.35">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="0.45" stop-color="#4ade80"/>
+      <stop offset="0.78" stop-color="#a3e635"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </linearGradient>
+
+    <filter id="glow" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- One scanline, tiled. A rule drawn per line would be a hundred
+         elements that all say the same thing. -->
+    <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="#000" opacity="0.28"/>
+    </pattern>
+  </defs>
+
+  <rect width="1044" height="180" rx="16" fill="#070b08"/>
+  <rect x="6" y="6" width="1032" height="168" rx="11"
+        fill="none" stroke="#4ade80" stroke-opacity="0.28" stroke-width="2"/>
+
+  <g filter="url(#glow)">
+    <path d="M48 0h12v12h-12zM60 12h12v12h-12zM72 24h12v12h-12zM84 36h12v12h-12zM72 48h12v12h-12zM60 60h12v12h-12zM48 72h12v12h-12z" fill="#4ade80" opacity="0.55"
+          transform="translate(0 48)"/>
+    <path d="M144 0h48v12h-48zM144 12h12v12h-12zM192 12h12v12h-12zM144 24h12v12h-12zM192 24h12v12h-12zM144 36h48v12h-48zM144 48h12v12h-12zM144 60h12v12h-12zM144 72h12v12h-12zM228 0h36v12h-36zM216 12h12v12h-12zM264 12h12v12h-12zM216 24h12v12h-12zM264 24h12v12h-12zM216 36h60v12h-60zM216 48h12v12h-12zM264 48h12v12h-12zM216 60h12v12h-12zM264 60h12v12h-12zM216 72h12v12h-12zM264 72h12v12h-12zM300 0h36v12h-36zM288 12h12v12h-12zM336 12h12v12h-12zM288 24h12v12h-12zM288 36h12v12h-12zM288 48h12v12h-12zM288 60h12v12h-12zM336 60h12v12h-12zM300 72h36v12h-36zM360 0h12v12h-12zM408 0h12v12h-12zM360 12h12v12h-12zM396 12h12v12h-12zM360 24h12v12h-12zM384 24h12v12h-12zM360 36h24v12h-24zM360 48h12v12h-12zM384 48h12v12h-12zM360 60h12v12h-12zM396 60h12v12h-12zM360 72h12v12h-12zM408 72h12v12h-12zM432 0h60v12h-60zM432 12h12v12h-12zM432 24h12v12h-12zM432 36h48v12h-48zM432 48h12v12h-12zM432 60h12v12h-12zM432 72h60v12h-60zM504 0h60v12h-60zM528 12h12v12h-12zM528 24h12v12h-12zM528 36h12v12h-12zM528 48h12v12h-12zM528 60h12v12h-12zM528 72h12v12h-12zM576 0h48v12h-48zM576 12h12v12h-12zM624 12h12v12h-12zM576 24h12v12h-12zM624 24h12v12h-12zM576 36h48v12h-48zM576 48h12v12h-12zM624 48h12v12h-12zM576 60h12v12h-12zM624 60h12v12h-12zM576 72h48v12h-48zM648 0h48v12h-48zM648 12h12v12h-12zM696 12h12v12h-12zM648 24h12v12h-12zM696 24h12v12h-12zM648 36h48v12h-48zM648 48h12v12h-12zM672 48h12v12h-12zM648 60h12v12h-12zM684 60h12v12h-12zM648 72h12v12h-12zM696 72h12v12h-12zM732 0h36v12h-36zM720 12h12v12h-12zM768 12h12v12h-12zM720 24h12v12h-12zM768 24h12v12h-12zM720 36h60v12h-60zM720 48h12v12h-12zM768 48h12v12h-12zM720 60h12v12h-12zM768 60h12v12h-12zM720 72h12v12h-12zM768 72h12v12h-12zM792 0h12v12h-12zM840 0h12v12h-12zM792 12h12v12h-12zM840 12h12v12h-12zM792 24h12v12h-12zM840 24h12v12h-12zM792 36h12v12h-12zM816 36h12v12h-12zM840 36h12v12h-12zM792 48h12v12h-12zM816 48h12v12h-12zM840 48h12v12h-12zM792 60h24v12h-24zM828 60h24v12h-24zM792 72h12v12h-12zM840 72h12v12h-12zM864 0h12v12h-12zM864 12h12v12h-12zM864 24h12v12h-12zM864 36h12v12h-12zM864 48h12v12h-12zM864 60h12v12h-12zM864 72h60v12h-60z" fill="url(#ink)" transform="translate(0 48)"/>
+    <rect x="948" y="48" width="48"
+          height="84" fill="#fbbf24" opacity="0.85">
+      <animate attributeName="opacity" values="0.85;0.85;0.1;0.1;0.85"
+               dur="1.2s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+
+  <rect width="1044" height="180" rx="16" fill="url(#scanlines)"
+        opacity="0.5" pointer-events="none"/>
+</svg>

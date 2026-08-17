@@ -1,6 +1,6 @@
 <div align="center">
 
-![PacketBrawl](PacketBrawl.png)
+![PacketBrawl](PacketBrawl.svg)
 
 ### A turn based tactical battler for the browser
 
