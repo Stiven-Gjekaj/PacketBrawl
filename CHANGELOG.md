@@ -24,6 +24,10 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   comparing one string.
 - `resolve`, `legalMoves`, and `replay`.
 - Continuous integration that lints, type checks, and tests every push.
+- The wordmark as SVG, drawn as a bitmap path so it does not depend on a font
+  being installed.
+- `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `TERMS.md`, and
+  `CODE_OF_CONDUCT.md`.
 
 ### Changed
 
@@ -32,8 +36,11 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
 - The game is live rather than asynchronous, and turns are sequential rather
   than simultaneous. Both reverse the original specification, and
   [docs/milestones.md](docs/milestones.md) records why.
+- **The licence.** The project was MIT and is now proprietary, with all rights
+  reserved. The source is readable, which is not the same as free to use.
 
 ### Removed
 
 - The Mnemis content pipeline, which described a database that does not exist.
   Content will be hand authored typed TypeScript.
+- The raster wordmark, replaced by the SVG.
