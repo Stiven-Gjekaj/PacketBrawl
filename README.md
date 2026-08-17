@@ -147,13 +147,20 @@ Two kinds of test are worth naming:
 
 ## Contributing
 
-Read [AGENTS.md](AGENTS.md) first. It covers how commits are split, how text
-in this repository is written, and who signs a commit.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) first, and its licence section before
+anything else, because this project is not open source and that changes what
+contributing means.
+
+[AGENTS.md](AGENTS.md) is the full set of rules: how commits are split, how
+text in this repository is written, and who signs a commit.
+
+For help, see [SUPPORT.md](SUPPORT.md). To report a security problem
+privately, see [SECURITY.md](SECURITY.md).
 
 ## License
 
 **PacketBrawl is not open source.** Copyright (c) 2025-2026 Stiven Gjekaj, all
-rights reserved. See [LICENSE](LICENSE).
+rights reserved. See [LICENSE](LICENSE) and [TERMS.md](TERMS.md).
 
 You may read this source and fork it inside GitHub, because GitHub's Terms of
 Service give every GitHub user that right. You may not use, copy, modify, or
