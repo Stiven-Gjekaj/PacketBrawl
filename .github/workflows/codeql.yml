@@ -1,0 +1,47 @@
+name: CodeQL
+
+# Static analysis for security problems.
+#
+# It finds little today, and that is the point of adding it today. The
+# repository is 812 lines of pure logic with no server, no input from a
+# stranger, and no dependency to be confused about. So this starts quiet.
+#
+# It stops being quiet at M3 and M4, when accounts and a server arrive and the
+# code begins reading what a stranger sent. Turning it on then means reading a
+# first report against a large change, and a first report is where the false
+# alarms are. Turning it on now means the noise is spent while the surface is
+# small, and every finding after that is about the change that caused it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # A weekly run finds a problem that a new rule discovers in old code, which
+    # no push would ever trigger.
+    - cron: "31 4 * * 1"
+
+jobs:
+  analyze:
+    name: Analyse the TypeScript
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+
+      - name: Set up CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: security-and-quality
+
+      - name: Analyse
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
