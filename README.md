@@ -6,11 +6,11 @@
 
 _Four characters a side. One player each. Speed decides who moves._
 
-[![CI](https://github.com/Stiven-Gjekaj/PacketBrawl/actions/workflows/ci.yml/badge.svg?style=flat-square)](https://github.com/Stiven-Gjekaj/PacketBrawl/actions/workflows/ci.yml)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Node 26](https://img.shields.io/badge/Node-26-5FA04E?style=flat-square&logo=nodedotjs&logoColor=white)
-![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat-square&logo=pnpm&logoColor=white)
-![All rights reserved](https://img.shields.io/badge/licence-all%20rights%20reserved-A31F34?style=flat-square)
+[![CI](https://img.shields.io/github/actions/workflow/status/Stiven-Gjekaj/PacketBrawl/ci.yml?branch=main&style=for-the-badge&label=ci&labelColor=070b08&logo=githubactions&logoColor=white)](https://github.com/Stiven-Gjekaj/PacketBrawl/actions/workflows/ci.yml)
+![TypeScript](https://img.shields.io/badge/typescript-34d399?style=for-the-badge&logo=typescript&logoColor=070b08)
+![Node 26](https://img.shields.io/badge/node_26-4ade80?style=for-the-badge&logo=nodedotjs&logoColor=070b08)
+![pnpm](https://img.shields.io/badge/pnpm-a3e635?style=for-the-badge&logo=pnpm&logoColor=070b08)
+[![All rights reserved](https://img.shields.io/badge/all_rights_reserved-fbbf24?style=for-the-badge&logoColor=070b08)](LICENSE)
 
 </div>
 
