@@ -1,3 +1,7 @@
+<div align="center">
+  <a href="../README.md"><img src="../PacketBrawl.svg" alt="PacketBrawl" width="420"></a>
+</div>
+
 # Milestones
 
 The build order, what is finished, and where this project left its original
@@ -121,5 +125,7 @@ These block later milestones and are not decided yet.
 - **Whether subclasses are mechanical.** Classes are felt rather than named in
   the interface. Whether a subclass is a rule or only design vocabulary is not
   settled.
-- **The visual direction.** A terminal frame with fantasy inside it, and the
-  wordmark redrawn as SVG.
+- **The visual direction.** The wordmark is drawn, and it sets the direction:
+  a terminal frame, scanlines, and a cursor, with a gold that no phosphor
+  display produces. How that carries into a board, a squad, and the turn
+  forecast is not decided.
