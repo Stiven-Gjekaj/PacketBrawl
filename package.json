@@ -11,7 +11,7 @@
     "test": "vitest run",
     "typecheck": "tsc --build",
     "lint": "biome ci .",
-    "format": "biome format --write .",
+    "format": "biome check --write .",
     "verify": "pnpm lint && pnpm typecheck && pnpm test"
   },
   "devDependencies": {
