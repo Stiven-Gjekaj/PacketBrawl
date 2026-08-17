@@ -1,0 +1,26 @@
+version: 2
+
+updates:
+  # packages/sim depends on nothing, so nothing here can reach the rules. What
+  # this watches is the toolchain: Biome, TypeScript, and Vitest. A break in
+  # one of those breaks the checks that hold the rules to their boundary,
+  # which is a quieter failure than a break in the rules themselves.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels: [dependencies]
+    commit-message:
+      prefix: "deps"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels: [dependencies, ci]
+    commit-message:
+      prefix: "ci"
