@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       # The version comes from .nvmrc rather than being written here twice.
       # Two places that name a version drift apart, and the one that is wrong
