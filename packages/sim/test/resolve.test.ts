@@ -19,6 +19,8 @@ function stats(speed: number): Stats {
     magicAttack: 10,
     magicDefence: 10,
     speed,
+    critRate: 0,
+    critDamage: 50,
   };
 }
 

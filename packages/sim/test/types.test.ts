@@ -14,6 +14,8 @@ function withHp(hp: number): Character {
       magicAttack: 10,
       magicDefence: 10,
       speed: 100,
+      critRate: 0,
+      critDamage: 50,
     },
     hp,
     essence: 0,

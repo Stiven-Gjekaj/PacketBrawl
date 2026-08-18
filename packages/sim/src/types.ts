@@ -31,11 +31,15 @@ export const SQUAD_SIZE = 4;
 export type CharacterId = string;
 
 /**
- * The six numbers a character fights with.
+ * The eight numbers a character fights with.
  *
- * Crit and status stats are deliberately absent. No ability reads one yet,
- * and a field that nothing reads is a field that drifts out of step with the
- * rules without any test noticing.
+ * attack and defence settle a physical hit. magicAttack and magicDefence
+ * settle a magic one. An ability names which pair it is judged by, so all
+ * four earn their place rather than one pair shadowing the other.
+ *
+ * Status effect stats are still absent. Nothing reads one yet, and a field
+ * that nothing reads drifts out of step with the rules without any test
+ * noticing.
  */
 export interface Stats {
   readonly maxHp: number;
@@ -44,6 +48,10 @@ export interface Stats {
   readonly magicAttack: number;
   readonly magicDefence: number;
   readonly speed: number;
+  /** The chance of a critical hit, as a percentage from 0 to 100. */
+  readonly critRate: number;
+  /** What a critical hit adds, as a percentage. 50 means half again. */
+  readonly critDamage: number;
 }
 
 /** One character partway through a match. */

@@ -18,6 +18,8 @@ function member(id: string, speed: number): SquadMember {
     magicAttack: 10,
     magicDefence: 10,
     speed,
+    critRate: 0,
+    critDamage: 50,
   };
   return { id, stats, maxEssence: 3 };
 }

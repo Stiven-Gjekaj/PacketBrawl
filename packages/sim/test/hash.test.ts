@@ -11,6 +11,8 @@ function stats(speed: number): Stats {
     magicAttack: 10,
     magicDefence: 10,
     speed,
+    critRate: 0,
+    critDamage: 50,
   };
 }
 
@@ -93,6 +95,6 @@ describe("hash", () => {
   // to find a disagreement, so changing how it is computed makes every
   // recorded hash meaningless and has to be a decision rather than a slip.
   it("produces the recorded value", () => {
-    expect(hash(match())).toBe("3b17aaabab30e5f8");
+    expect(hash(match())).toBe("67b2fc95083e2d60");
   });
 });
