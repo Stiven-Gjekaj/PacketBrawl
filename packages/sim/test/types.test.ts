@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Character } from "../src/types.ts";
 import { isAlive } from "../src/types.ts";
+import { abilities } from "./support.ts";
 
 function withHp(hp: number): Character {
   return {
@@ -20,6 +21,7 @@ function withHp(hp: number): Character {
     hp,
     essence: 0,
     maxEssence: 3,
+    abilities: abilities(),
     actionValue: 100_000,
   };
 }

@@ -10,6 +10,7 @@ import {
   resolve,
 } from "../src/resolve.ts";
 import type { Command, GameState, Stats } from "../src/types.ts";
+import { abilities } from "./support.ts";
 
 function stats(speed: number): Stats {
   return {
@@ -30,6 +31,7 @@ function options(leftLead = 150, rightLead = 120): MatchOptions {
       id: `${prefix}${index}`,
       stats: stats(index === 0 ? leadSpeed : 100),
       maxEssence: 3,
+      abilities: abilities(),
     }));
 
   return {
@@ -56,18 +58,37 @@ function playOut(state: GameState, count: number): [GameState, Command[]] {
 }
 
 describe("legalMoves", () => {
-  it("offers a move only to the player whose turn it is", () => {
+  it("offers nothing at all to the player who is not on turn", () => {
     const state = createMatch(options(150, 120));
-    expect(legalMoves(state, 0)).toEqual([{ kind: "wait", character: "a0" }]);
     expect(legalMoves(state, 1)).toEqual([]);
+    expect(legalMoves(state, 0).length).toBeGreaterThan(0);
   });
 
-  it("offers the other player a move once the turn passes", () => {
+  it("offers the turn to the other player once it passes", () => {
     const state = resolve(createMatch(options(150, 120)), [
       { kind: "wait", character: "a0" },
     ]);
     expect(legalMoves(state, 0)).toEqual([]);
-    expect(legalMoves(state, 1)).toEqual([{ kind: "wait", character: "b0" }]);
+    expect(legalMoves(state, 1).every((m) => m.character === "b0")).toBe(true);
+  });
+
+  // The shared pool starts empty and Essence starts at zero, so the opening
+  // turn can only wait or use a basic. This is the tension the two resources
+  // exist for: somebody has to spend a turn funding the squad.
+  it("offers only wait and a basic on the opening turn", () => {
+    const moves = legalMoves(createMatch(options(150, 120)), 0);
+    const slots = new Set(
+      moves.map((m) => (m.kind === "act" ? m.slot : "wait")),
+    );
+    expect([...slots].sort()).toEqual(["basic", "wait"]);
+  });
+
+  it("offers a basic against every living enemy and no ally", () => {
+    const moves = legalMoves(createMatch(options(150, 120)), 0);
+    const targets = moves
+      .filter((m) => m.kind === "act")
+      .map((m) => (m.kind === "act" ? m.target : null));
+    expect(targets.sort()).toEqual(["b0", "b1", "b2", "b3"]);
   });
 
   it("offers nothing at all once the match is decided", () => {

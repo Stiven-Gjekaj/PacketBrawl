@@ -6,6 +6,7 @@ import {
   hitsOpponents,
 } from "../src/ability.ts";
 import type { Character, PlayerSlot, SquadSlot, Stats } from "../src/types.ts";
+import { abilities } from "./support.ts";
 
 const STATS: Stats = {
   maxHp: 100,
@@ -32,6 +33,7 @@ function person(
     hp,
     essence: 0,
     maxEssence: 3,
+    abilities: abilities(),
     actionValue: 100_000,
   };
 }

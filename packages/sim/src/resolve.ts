@@ -1,6 +1,11 @@
+import type { Ability, AbilitySlot } from "./ability.ts";
+import { charactersHit, costOf, hitsOpponents } from "./ability.ts";
 import { actionValueFor, elapseToNextTurn, nextToAct } from "./action-value.ts";
+import { strike } from "./damage.ts";
+import type { Rng } from "./rng.ts";
 import type {
   Character,
+  CharacterId,
   Command,
   GameState,
   MatchOutcome,
@@ -26,14 +31,16 @@ export class IllegalCommandError extends Error {
   }
 }
 
-/**
- * Who has been emptied, and so who has won.
- *
- * Exported because the draw it can report cannot yet be reached by resolving
- * commands: nothing deals damage, so no action can empty a squad. Leaving it
- * unexported would leave a branch of the win rule that no test can reach, and
- * damage lands on top of this rule rather than beside it.
- */
+/** What a character gains for spending a turn. */
+export const ESSENCE_PER_ACTION = 1;
+
+/** What a character gains for being hit, however hard. */
+export const ESSENCE_PER_HIT_TAKEN = 1;
+
+/** What the squad's shared pool gains when somebody spends a turn on a basic. */
+export const SHARED_PER_BASIC = 1;
+
+/** Who has been emptied, and so who has won. */
 export function outcomeFor(characters: readonly Character[]): MatchOutcome {
   const zeroWiped = !characters.some(
     (character) => character.owner === 0 && isAlive(character),
@@ -43,8 +50,6 @@ export function outcomeFor(characters: readonly Character[]): MatchOutcome {
   );
 
   if (zeroWiped && oneWiped) {
-    // One action emptied both squads. Nothing produces this yet, but a state
-    // that cannot say it happened would have to call it a win for somebody.
     return { kind: "decided", winner: null };
   }
   if (zeroWiped) {
@@ -64,12 +69,46 @@ function withPlayerUpdated(
   return slot === 0 ? [updated, players[1]] : [players[0], updated];
 }
 
+function gainEssence(character: Character, amount: number): Character {
+  // A character with no Essence at all gains none. That is what makes a
+  // character who pays only in blood work without the rules knowing it.
+  const gained = Math.min(character.maxEssence, character.essence + amount);
+  return { ...character, essence: gained };
+}
+
 /**
- * The commands this player may give right now.
+ * Whether a character can pay for an ability right now.
  *
- * A player who is not on turn has none. The server checks a command against
- * this list before resolving it, so a client that asks for something it
- * cannot have is refused rather than believed.
+ * An HP price must leave the character alive. Paying a cost should not be a
+ * way to die, because a character who died mid-action leaves the rules
+ * answering questions nobody asked: whether the ability still lands, and
+ * whether a squad emptied by its own turn has lost.
+ */
+export function canAfford(
+  state: GameState,
+  character: Character,
+  ability: Ability,
+): boolean {
+  const cost = costOf(ability);
+  const player = state.players[character.owner];
+  return (
+    player.sharedEssence >= cost.shared &&
+    character.essence >= cost.essence &&
+    character.hp > cost.hp
+  );
+}
+
+/** The ability a slot names on a character. */
+export function abilityAt(character: Character, slot: AbilitySlot): Ability {
+  return character.abilities[slot];
+}
+
+/**
+ * Every command this player may give right now.
+ *
+ * A player not on turn has none. The server checks a command against this
+ * list before resolving it, so a client that asks for something it cannot
+ * have is refused rather than believed.
  */
 export function legalMoves(state: GameState, player: PlayerSlot): Command[] {
   if (state.outcome.kind === "decided") {
@@ -81,7 +120,80 @@ export function legalMoves(state: GameState, player: PlayerSlot): Command[] {
     return [];
   }
 
-  return [{ kind: "wait", character: actor.id }];
+  const moves: Command[] = [{ kind: "wait", character: actor.id }];
+
+  for (const slot of ["basic", "skill", "soul"] as const) {
+    const ability = abilityAt(actor, slot);
+    if (!canAfford(state, actor, ability)) {
+      continue;
+    }
+
+    const needsTarget =
+      ability.target === "single" ||
+      ability.target === "blast" ||
+      ability.target === "ally";
+
+    if (!needsTarget) {
+      moves.push({ kind: "act", character: actor.id, slot, target: null });
+      continue;
+    }
+
+    const side = hitsOpponents(ability) ? 1 - actor.owner : actor.owner;
+    for (const candidate of state.characters) {
+      if (isAlive(candidate) && candidate.owner === side) {
+        moves.push({
+          kind: "act",
+          character: actor.id,
+          slot,
+          target: candidate.id,
+        });
+      }
+    }
+  }
+
+  return moves;
+}
+
+/** Apply the hits an ability lands, and give back the changed characters. */
+function applyHits(
+  rng: Rng,
+  characters: readonly Character[],
+  actor: Character,
+  ability: Ability,
+  targetId: CharacterId | null,
+): { rng: Rng; characters: readonly Character[] } {
+  if (!hitsOpponents(ability)) {
+    // Nothing but damage is modelled yet, so an ability aimed at the actor's
+    // own side does nothing beyond costing what it costs. Healing and buffs
+    // land here when they are designed.
+    return { rng, characters };
+  }
+
+  const reached = charactersHit(characters, actor, ability, targetId);
+  if (reached.length === 0) {
+    return { rng, characters };
+  }
+
+  // The order is the order charactersHit gives, front of the line first, so
+  // the generator is drawn from in an order a replay repeats exactly.
+  const damageById = new Map<CharacterId, number>();
+  let current = rng;
+  for (const target of reached) {
+    const hit = strike(current, actor, target, ability.school, ability.power);
+    current = hit.rng;
+    damageById.set(target.id, hit.damage);
+  }
+
+  const updated = characters.map((character) => {
+    const damage = damageById.get(character.id);
+    if (damage === undefined) {
+      return character;
+    }
+    const hurt = { ...character, hp: Math.max(0, character.hp - damage) };
+    return gainEssence(hurt, ESSENCE_PER_HIT_TAKEN);
+  });
+
+  return { rng: current, characters: updated };
 }
 
 /** Apply one command to a state, and give back the state that follows. */
@@ -92,8 +204,8 @@ function applyOne(state: GameState, command: Command): GameState {
     );
   }
 
-  const characters = elapseToNextTurn(state.characters);
-  const elapsed: GameState = { ...state, characters };
+  const elapsedCharacters = elapseToNextTurn(state.characters);
+  const elapsed: GameState = { ...state, characters: elapsedCharacters };
 
   const actor = nextToAct(elapsed);
   if (actor === null) {
@@ -107,31 +219,86 @@ function applyOne(state: GameState, command: Command): GameState {
     );
   }
 
-  switch (command.kind) {
-    case "wait": {
-      // Waiting gives up the action. The character starts the walk to their
-      // next turn again, which sends them to the back of the order.
-      const afterAction = characters.map((character) =>
-        character.id === actor.id
-          ? {
-              ...character,
-              actionValue: actionValueFor(character.stats.speed),
-            }
-          : character,
-      );
+  let characters = elapsedCharacters;
+  let rng = state.rng;
+  let players = state.players;
 
-      return {
-        ...state,
-        characters: afterAction,
-        players: withPlayerUpdated(state.players, actor.owner, {
-          ...state.players[actor.owner],
-          lastActionOrdinal: state.actionOrdinal,
-        }),
-        actionOrdinal: state.actionOrdinal + 1,
-        outcome: outcomeFor(afterAction),
-      };
+  if (command.kind === "act") {
+    const ability = abilityAt(actor, command.slot);
+    if (!canAfford(elapsed, actor, ability)) {
+      throw new IllegalCommandError(
+        `${actor.id} cannot pay for ${ability.name} right now.`,
+      );
+    }
+
+    const cost = costOf(ability);
+
+    // Pay first, then act, then gain. Paying first is what stops an ability
+    // funding itself out of the Essence its own hit generates.
+    characters = characters.map((character) =>
+      character.id === actor.id
+        ? {
+            ...character,
+            essence: character.essence - cost.essence,
+            hp: character.hp - cost.hp,
+          }
+        : character,
+    );
+    players = withPlayerUpdated(players, actor.owner, {
+      ...players[actor.owner],
+      sharedEssence: players[actor.owner].sharedEssence - cost.shared,
+    });
+
+    const paidActor = characters.find((one) => one.id === actor.id);
+    if (paidActor === undefined) {
+      throw new IllegalCommandError(`${actor.id} left the match mid action.`);
+    }
+
+    const landed = applyHits(
+      rng,
+      characters,
+      paidActor,
+      ability,
+      command.target,
+    );
+    rng = landed.rng;
+    characters = landed.characters;
+
+    if (ability.slot === "basic") {
+      const pool = players[actor.owner];
+      players = withPlayerUpdated(players, actor.owner, {
+        ...pool,
+        sharedEssence: Math.min(
+          pool.maxSharedEssence,
+          pool.sharedEssence + SHARED_PER_BASIC,
+        ),
+      });
     }
   }
+
+  // Spending a turn fills a little Essence whatever the turn was spent on,
+  // including a wait. A character who cannot act usefully is still building
+  // towards the turn where they can.
+  characters = characters.map((character) =>
+    character.id === actor.id
+      ? gainEssence(
+          { ...character, actionValue: actionValueFor(character.stats.speed) },
+          ESSENCE_PER_ACTION,
+        )
+      : character,
+  );
+
+  return {
+    ...state,
+    rng,
+    characters,
+    players: withPlayerUpdated(players, actor.owner, {
+      ...players[actor.owner],
+      lastActionOrdinal: state.actionOrdinal,
+    }),
+    actionOrdinal: state.actionOrdinal + 1,
+    outcome: outcomeFor(characters),
+  };
 }
 
 /**

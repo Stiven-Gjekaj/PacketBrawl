@@ -1,6 +1,7 @@
 import { actionValueFor } from "./action-value.ts";
 import { createRng } from "./rng.ts";
 import type {
+  AbilitySet,
   Character,
   CharacterId,
   GameState,
@@ -27,6 +28,7 @@ export interface SquadMember {
   readonly stats: Stats;
   /** Zero for a character who pays in something other than Essence. */
   readonly maxEssence: number;
+  readonly abilities: AbilitySet;
 }
 
 /** Everything needed to begin a match. */
@@ -55,6 +57,7 @@ function buildSquad(
     hp: member.stats.maxHp,
     essence: 0,
     maxEssence: member.maxEssence,
+    abilities: member.abilities,
     // Every character starts one full distance from their first turn, so the
     // opening order is decided by speed alone rather than by who was built
     // first.

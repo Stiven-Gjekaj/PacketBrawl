@@ -12,6 +12,15 @@
  */
 
 export {
+  type Ability,
+  type AbilityCost,
+  type AbilitySlot,
+  charactersHit,
+  costOf,
+  hitsOpponents,
+  type TargetShape,
+} from "./ability.ts";
+export {
   ACTION_VALUE_SCALE,
   actionValueFor,
   BASE_ACTION_VALUE,
@@ -25,9 +34,28 @@ export {
   type MatchOptions,
   type SquadMember,
 } from "./create-match.ts";
+export {
+  defenceOf,
+  MITIGATION_CONSTANT,
+  mitigate,
+  offenceOf,
+  rawDamage,
+  type School,
+  strike,
+} from "./damage.ts";
 export { canonicalize, hash } from "./hash.ts";
 export { replay } from "./replay.ts";
-export { IllegalCommandError, legalMoves, resolve } from "./resolve.ts";
+export {
+  abilityAt,
+  canAfford,
+  ESSENCE_PER_ACTION,
+  ESSENCE_PER_HIT_TAKEN,
+  IllegalCommandError,
+  legalMoves,
+  outcomeFor,
+  resolve,
+  SHARED_PER_BASIC,
+} from "./resolve.ts";
 export {
   createRng,
   nextInt,
@@ -36,6 +64,7 @@ export {
   type RngDraw,
 } from "./rng.ts";
 export {
+  type AbilitySet,
   type Character,
   type CharacterId,
   type Command,

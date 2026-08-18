@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createMatch } from "../src/create-match.ts";
 import { canonicalize, hash } from "../src/hash.ts";
 import type { GameState, Stats } from "../src/types.ts";
+import { abilities } from "./support.ts";
 
 function stats(speed: number): Stats {
   return {
@@ -22,6 +23,7 @@ function match(): GameState {
       id: `${prefix}${index}`,
       stats: stats(index === 0 ? leadSpeed : 100),
       maxEssence: 3,
+      abilities: abilities(),
     }));
 
   return createMatch({
@@ -95,6 +97,6 @@ describe("hash", () => {
   // to find a disagreement, so changing how it is computed makes every
   // recorded hash meaningless and has to be a decision rather than a slip.
   it("produces the recorded value", () => {
-    expect(hash(match())).toBe("67b2fc95083e2d60");
+    expect(hash(match())).toBe("00875b027b41d8b0");
   });
 });

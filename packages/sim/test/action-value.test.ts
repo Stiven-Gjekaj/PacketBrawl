@@ -8,6 +8,7 @@ import {
 } from "../src/action-value.ts";
 import { createMatch, type SquadMember } from "../src/create-match.ts";
 import type { GameState, Stats } from "../src/types.ts";
+import { abilities } from "./support.ts";
 
 /** A character who differs from every other only in speed. */
 function member(id: string, speed: number): SquadMember {
@@ -21,7 +22,7 @@ function member(id: string, speed: number): SquadMember {
     critRate: 0,
     critDamage: 50,
   };
-  return { id, stats, maxEssence: 3 };
+  return { id, stats, maxEssence: 3, abilities: abilities() };
 }
 
 /**

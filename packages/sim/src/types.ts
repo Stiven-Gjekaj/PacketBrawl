@@ -1,3 +1,4 @@
+import type { Ability, AbilitySlot } from "./ability.ts";
 import type { Rng } from "./rng.ts";
 
 /**
@@ -54,6 +55,13 @@ export interface Stats {
   readonly critDamage: number;
 }
 
+/** The three things a character can spend a turn on. */
+export interface AbilitySet {
+  readonly basic: Ability;
+  readonly skill: Ability;
+  readonly soul: Ability;
+}
+
 /** One character partway through a match. */
 export interface Character {
   readonly id: CharacterId;
@@ -67,6 +75,12 @@ export interface Character {
    */
   readonly essence: number;
   readonly maxEssence: number;
+  /**
+   * The three things this character can spend a turn on. They live on the
+   * character rather than in a table the rules look up, so a state carries
+   * everything needed to resolve it and a replay needs nothing else.
+   */
+  readonly abilities: AbilitySet;
   /**
    * How far this character still is from their next action. The living
    * character with the smallest value acts next. See `action-value.ts`.
@@ -112,15 +126,24 @@ export interface GameState {
 /**
  * Something a player tells the match to do.
  *
- * `wait` is the only command so far. It gives up the action and sends the
- * character to the back of the order. It is here because it is the one
- * command whose meaning no unanswered design question can change, so the
- * turn engine can be built and tested before a single ability exists.
+ * `wait` gives up the action and sends the character to the back of the
+ * order. `act` spends the turn on one of the character's three abilities.
+ *
+ * `target` is the character an ability is aimed at, and is null for a shape
+ * that needs no aim. A shape that does need one and is given null reaches
+ * nobody, which `legalMoves` never offers and `resolve` refuses.
  */
-export type Command = {
-  readonly kind: "wait";
-  readonly character: CharacterId;
-};
+export type Command =
+  | {
+      readonly kind: "wait";
+      readonly character: CharacterId;
+    }
+  | {
+      readonly kind: "act";
+      readonly character: CharacterId;
+      readonly slot: AbilitySlot;
+      readonly target: CharacterId | null;
+    };
 
 /** A character is out of the match when it reaches zero HP. */
 export function isAlive(character: Character): boolean {

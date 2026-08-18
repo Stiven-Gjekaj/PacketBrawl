@@ -9,6 +9,7 @@ import {
 } from "../src/damage.ts";
 import { createRng } from "../src/rng.ts";
 import type { Character, Stats } from "../src/types.ts";
+import { abilities } from "./support.ts";
 
 function stats(over: Partial<Stats> = {}): Stats {
   return {
@@ -33,6 +34,7 @@ function character(id: string, over: Partial<Stats> = {}): Character {
     hp: 100,
     essence: 0,
     maxEssence: 3,
+    abilities: abilities(),
     actionValue: 100_000,
   };
 }
