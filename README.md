@@ -27,21 +27,23 @@ A match ends when one squad has nobody left standing.
 
 ## What runs today
 
-This repository is at milestone M0 of [seven](docs/milestones.md). That
-milestone is the skeleton, and the skeleton is finished:
+M0 is finished and M1 has its rules but no interface. See the
+[build order](docs/milestones.md).
 
-- `packages/sim` resolves commands, orders turns by speed, hashes a state, and
-  replays a command log. 812 lines across 9 files.
-- 64 tests pass. There is no browser in any of them.
+- `packages/sim` holds the whole game: turn order, damage, abilities,
+  resources, targeting, a state hash, and replay. 1281 lines across 11 files.
+- 112 tests pass. There is no browser in any of them.
 - The package depends on nothing at all, and a test enforces that.
 
-**There is no game to play yet.** There is no user interface, no network, no
-account, and no character in the game beyond the ones a test invents. The one
-command a player can give is `wait`, which gives up the turn. Nothing deals
-damage.
+A turn can be spent on a basic, a skill, a soul, or a wait. Damage follows a
+ratio curve that never reaches immunity. Abilities are priced in any mix of a
+shared squad pool, a character's own Soul Essence, and their HP.
+[docs/combat.md](docs/combat.md) explains each rule and what it was chosen
+over.
 
-That is the point of M0. The turn engine is the piece every later milestone
-sits on, so it is built and proved before anything is drawn on a screen.
+**There is still no game to play.** There is no user interface, no network, no
+account, and no character that a test did not invent. M1 is not finished until
+two people can play a match in a browser and the match is worth playing.
 
 ## The one architectural rule
 
@@ -124,6 +126,7 @@ PacketBrawl/
 │       └── test/
 ├── docs/
 │   ├── architecture.md   how the pieces fit, and why
+│   ├── combat.md         how a hit resolves, and why
 │   └── milestones.md     the build order, and what changed from the spec
 ├── scripts/
 │   └── check-links.sh    every relative link in every document

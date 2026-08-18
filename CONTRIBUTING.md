@@ -59,6 +59,8 @@ You need Node 26 and pnpm. The Node version is in `.nvmrc`.
 | Change | Files |
 | ------ | ----- |
 | The turn order, or the forecast | `packages/sim/src/action-value.ts` |
+| The damage a hit deals | `packages/sim/src/damage.ts` |
+| What an ability is, and who it reaches | `packages/sim/src/ability.ts` |
 | What a state or a command holds | `packages/sim/src/types.ts` |
 | Applying a command | `packages/sim/src/resolve.ts` |
 | The state hash | `packages/sim/src/hash.ts` |

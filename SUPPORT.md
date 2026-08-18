@@ -13,6 +13,8 @@ the rules engine.
 - [README.md](README.md) says what the project is and what runs today.
 - [docs/architecture.md](docs/architecture.md) says how the pieces fit, and
   why the turn order and the state hash work the way they do.
+- [docs/combat.md](docs/combat.md) says how a hit resolves, what an ability
+  costs, and why each rule was chosen over the one beside it.
 - [docs/milestones.md](docs/milestones.md) holds the build order, and the
   reason behind each decision that shapes it. It also records the six places
   this project now disagrees with its own original specification.

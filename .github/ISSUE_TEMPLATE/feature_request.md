@@ -38,10 +38,11 @@ refused, but it costs the forecast its accuracy, and that is a real price.
 
 ## Does it need a new stat
 
-Six stats exist: HP, attack, defence, magic attack, magic defence, and speed.
-Crit and status stats are deliberately absent, because nothing reads them yet.
+Eight stats exist: HP, attack, defence, magic attack, magic defence, speed,
+crit rate, and crit damage. Status effect stats are absent, because nothing
+reads one yet.
 
-If your idea needs a seventh, say which and why the six do not do it.
+If your idea needs a ninth, say which and why the eight do not do it.
 
 ## Are you arguing against a decision
 

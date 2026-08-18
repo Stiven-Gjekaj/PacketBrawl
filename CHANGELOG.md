@@ -41,6 +41,10 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   `a href`. It runs in CI.
 - CodeQL analysis, weekly and on every push to the default branch.
 - Dependabot for the toolchain and for the actions.
+- The combat rules: damage, critical hits, abilities, the three actions, Soul
+  Essence, and targeting by position. [docs/combat.md](docs/combat.md) records
+  each rule and what it was chosen over.
+- Crit rate and crit damage, taking the stat block from six to eight.
 
 ### Changed
 

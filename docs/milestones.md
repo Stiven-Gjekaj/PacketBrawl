@@ -14,7 +14,7 @@ Each milestone ships and is tested before the next one starts.
 | | Milestone | State |
 |---|---|---|
 | M0 | Skeleton. The rules package, its types, a resolve, and tests. No UI, no network. | Done |
-| M1 | Local hotseat. Full combat playable in a browser, two players one keyboard, state in memory. | Not started |
+| M1 | Local hotseat. Full combat playable in a browser, two players one keyboard, state in memory. | Rules done, no interface |
 | M2 | Determinism harness. Replay tests and fuzzing over random legal commands, asserting no crash and no divergence. | Not started |
 | M3 | Accounts. Auth, profiles, the squad builder, persistence. | Not started |
 | M4 | Live matches. Server routes, the command log, realtime, per turn deadlines. | Not started |
@@ -39,8 +39,24 @@ it starts until it is fun.
 - The package boundary, enforced by the type system and by a test rather than
   by a promise.
 
-M0 deliberately has no damage, no ability, no character, and no interface. The
-only command is `wait`.
+M0 shipped with no damage, no ability, no character, and no interface. Its
+only command was `wait`.
+
+## What M1 has so far
+
+The combat rules are written and tested. [combat.md](combat.md) records them
+and the reasoning behind each one.
+
+- The damage rule, a ratio curve that never reaches immunity.
+- Critical hits, rolled from the generator the state carries.
+- Abilities, priced in any mix of shared pool, Essence, and HP.
+- The three actions: basic, skill, and soul.
+- Essence, filling on acting and on being hit.
+- Targeting by position, including a blast that catches both neighbours.
+
+**There is still no interface**, and no character that a test did not invent.
+M1 is not finished until two people can play a match in a browser and the
+match is worth playing.
 
 ## Where this left the specification
 
@@ -117,9 +133,10 @@ These block later milestones and are not decided yet.
 
 - **Spoiler policy.** Which arc the game is set in, and whether the content
   leaks plot to readers of the story.
-- **The full stat list.** Six stats exist: HP, attack, defence, magic attack,
-  magic defence, and speed. Crit and status effect stats are not in the code,
-  and get added when an ability needs one rather than before.
+- **Status effect stats.** Eight stats exist, listed in
+  [combat.md](combat.md). Nothing models a status effect yet, so the stats one
+  would need are not in the code. They get added when an ability needs one
+  rather than before.
 - **What the team building helper does.** Whether it warns about a missing
   role, suggests a pairing, or builds a squad outright.
 - **Whether subclasses are mechanical.** Classes are felt rather than named in
