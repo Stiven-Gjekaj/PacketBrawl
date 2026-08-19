@@ -2,6 +2,7 @@ import type { Ability, AbilitySlot } from "./ability.ts";
 import { charactersHit, costOf, hitsOpponents } from "./ability.ts";
 import { actionValueFor, elapseToNextTurn, nextToAct } from "./action-value.ts";
 import { strike } from "./damage.ts";
+import type { MatchEvent, ResolveResult } from "./events.ts";
 import type { Rng } from "./rng.ts";
 import type {
   Character,
@@ -161,27 +162,35 @@ function applyHits(
   actor: Character,
   ability: Ability,
   targetId: CharacterId | null,
-): { rng: Rng; characters: readonly Character[] } {
+): { rng: Rng; characters: readonly Character[]; events: MatchEvent[] } {
   if (!hitsOpponents(ability)) {
     // Nothing but damage is modelled yet, so an ability aimed at the actor's
     // own side does nothing beyond costing what it costs. Healing and buffs
     // land here when they are designed.
-    return { rng, characters };
+    return { rng, characters, events: [] };
   }
 
   const reached = charactersHit(characters, actor, ability, targetId);
   if (reached.length === 0) {
-    return { rng, characters };
+    return { rng, characters, events: [] };
   }
 
   // The order is the order charactersHit gives, front of the line first, so
   // the generator is drawn from in an order a replay repeats exactly.
   const damageById = new Map<CharacterId, number>();
+  const events: MatchEvent[] = [];
   let current = rng;
   for (const target of reached) {
     const hit = strike(current, actor, target, ability.school, ability.power);
     current = hit.rng;
     damageById.set(target.id, hit.damage);
+    events.push({
+      kind: "hit",
+      source: actor.id,
+      target: target.id,
+      damage: hit.damage,
+      critical: hit.critical,
+    });
   }
 
   const updated = characters.map((character) => {
@@ -193,11 +202,21 @@ function applyHits(
     return gainEssence(hurt, ESSENCE_PER_HIT_TAKEN);
   });
 
-  return { rng: current, characters: updated };
+  // A fall is reported after every hit of the action, and only for a character
+  // who was standing when the action began. Reporting it inside the loop would
+  // put a death before a hit that had already been dealt to somebody else.
+  for (const target of reached) {
+    const after = updated.find((one) => one.id === target.id);
+    if (isAlive(target) && after !== undefined && !isAlive(after)) {
+      events.push({ kind: "fell", character: target.id });
+    }
+  }
+
+  return { rng: current, characters: updated, events };
 }
 
-/** Apply one command to a state, and give back the state that follows. */
-function applyOne(state: GameState, command: Command): GameState {
+/** Apply one command, and report the state it reached and how. */
+function applyOne(state: GameState, command: Command): ResolveResult {
   if (state.outcome.kind === "decided") {
     throw new IllegalCommandError(
       "The match is over, and a finished match takes no more commands.",
@@ -222,6 +241,16 @@ function applyOne(state: GameState, command: Command): GameState {
   let characters = elapsedCharacters;
   let rng = state.rng;
   let players = state.players;
+  const events: MatchEvent[] = [
+    {
+      kind: "acted",
+      ordinal: state.actionOrdinal,
+      character: actor.id,
+      action: command.kind === "wait" ? "wait" : command.slot,
+      ability:
+        command.kind === "wait" ? null : abilityAt(actor, command.slot).name,
+    },
+  ];
 
   if (command.kind === "act") {
     const ability = abilityAt(actor, command.slot);
@@ -263,16 +292,27 @@ function applyOne(state: GameState, command: Command): GameState {
     );
     rng = landed.rng;
     characters = landed.characters;
+    events.push(...landed.events);
 
     if (ability.slot === "basic") {
       const pool = players[actor.owner];
+      const filled = Math.min(
+        pool.maxSharedEssence,
+        pool.sharedEssence + SHARED_PER_BASIC,
+      );
       players = withPlayerUpdated(players, actor.owner, {
         ...pool,
-        sharedEssence: Math.min(
-          pool.maxSharedEssence,
-          pool.sharedEssence + SHARED_PER_BASIC,
-        ),
+        sharedEssence: filled,
       });
+      // A full pool gains nothing, and reporting a gain of zero would put a
+      // line in the log for something that did not happen.
+      if (filled > pool.sharedEssence) {
+        events.push({
+          kind: "sharedGained",
+          player: actor.owner,
+          amount: filled - pool.sharedEssence,
+        });
+      }
     }
   }
 
@@ -288,33 +328,48 @@ function applyOne(state: GameState, command: Command): GameState {
       : character,
   );
 
+  const outcome = outcomeFor(characters);
+  if (outcome.kind === "decided") {
+    events.push({ kind: "decided", winner: outcome.winner });
+  }
+
   return {
-    ...state,
-    rng,
-    characters,
-    players: withPlayerUpdated(players, actor.owner, {
-      ...players[actor.owner],
-      lastActionOrdinal: state.actionOrdinal,
-    }),
-    actionOrdinal: state.actionOrdinal + 1,
-    outcome: outcomeFor(characters),
+    state: {
+      ...state,
+      rng,
+      characters,
+      players: withPlayerUpdated(players, actor.owner, {
+        ...players[actor.owner],
+        lastActionOrdinal: state.actionOrdinal,
+      }),
+      actionOrdinal: state.actionOrdinal + 1,
+      outcome,
+    },
+    events,
   };
 }
 
 /**
- * Apply commands in order, and give back the state that follows them all.
+ * Apply commands in order, and report the state they reached and how.
  *
  * The state given in is never edited. Nothing here reads the clock, the
  * network, or a random source the state does not carry, so the same state and
- * the same commands always produce the same result.
+ * the same commands always produce the same result and the same account of it.
+ *
+ * The events are not part of the state and never reach `hash`. A match is its
+ * commands. The events are what those commands are read to mean, so rewording
+ * a report costs nothing, while hashing one would void every recorded match.
  */
 export function resolve(
   state: GameState,
   commands: readonly Command[],
-): GameState {
+): ResolveResult {
   let current = state;
+  const events: MatchEvent[] = [];
   for (const command of commands) {
-    current = applyOne(current, command);
+    const step = applyOne(current, command);
+    current = step.state;
+    events.push(...step.events);
   }
-  return current;
+  return { state: current, events };
 }

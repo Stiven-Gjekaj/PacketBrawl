@@ -43,18 +43,18 @@ const basicAt = (target: string): Command => ({
 describe("a basic attack", () => {
   // attack 100, power 50, defence 0. So raw is 50 and none is mitigated.
   it("takes the damage the formula says", () => {
-    const after = resolve(createMatch(options()), [basicAt("b0")]);
+    const after = resolve(createMatch(options()), [basicAt("b0")]).state;
     expect(find(after, "b0").hp).toBe(50);
   });
 
   it("fills the squad's shared pool", () => {
-    const after = resolve(createMatch(options()), [basicAt("b0")]);
+    const after = resolve(createMatch(options()), [basicAt("b0")]).state;
     expect(after.players[0].sharedEssence).toBe(1);
     expect(after.players[1].sharedEssence).toBe(0);
   });
 
   it("touches nobody but its target", () => {
-    const after = resolve(createMatch(options()), [basicAt("b1")]);
+    const after = resolve(createMatch(options()), [basicAt("b1")]).state;
     expect(find(after, "b0").hp).toBe(100);
     expect(find(after, "b1").hp).toBe(50);
     expect(find(after, "b2").hp).toBe(100);
@@ -63,19 +63,19 @@ describe("a basic attack", () => {
 
 describe("Essence", () => {
   it("fills a little for spending a turn", () => {
-    const after = resolve(createMatch(options()), [basicAt("b0")]);
+    const after = resolve(createMatch(options()), [basicAt("b0")]).state;
     expect(find(after, "a0").essence).toBe(ESSENCE_PER_ACTION);
   });
 
   it("fills for being hit as well as for acting", () => {
-    const after = resolve(createMatch(options()), [basicAt("b0")]);
+    const after = resolve(createMatch(options()), [basicAt("b0")]).state;
     expect(find(after, "b0").essence).toBe(ESSENCE_PER_HIT_TAKEN);
   });
 
   it("fills even on a turn spent waiting", () => {
     const after = resolve(createMatch(options()), [
       { kind: "wait", character: "a0" },
-    ]);
+    ]).state;
     expect(find(after, "a0").essence).toBe(ESSENCE_PER_ACTION);
   });
 
@@ -84,7 +84,7 @@ describe("Essence", () => {
     for (let i = 0; i < 20; i += 1) {
       const actor = legalMoves(state, 0)[0] ?? legalMoves(state, 1)[0];
       if (actor === undefined) break;
-      state = resolve(state, [actor]);
+      state = resolve(state, [actor]).state;
     }
     for (const character of state.characters) {
       expect(character.essence).toBeLessThanOrEqual(character.maxEssence);
@@ -109,17 +109,18 @@ describe("Essence", () => {
         })),
       ] as const,
     });
-    const after = resolve(createMatch(bloodless), [basicAt("b0")]);
+    const after = resolve(createMatch(bloodless), [basicAt("b0")]).state;
     expect(find(after, "a0").essence).toBe(0);
   });
 });
 
 describe("paying for an ability", () => {
   it("refuses a skill when the shared pool is empty", () => {
-    expect(() =>
-      resolve(createMatch(options()), [
-        { kind: "act", character: "a0", slot: "skill", target: "b0" },
-      ]),
+    expect(
+      () =>
+        resolve(createMatch(options()), [
+          { kind: "act", character: "a0", slot: "skill", target: "b0" },
+        ]).state,
     ).toThrow(IllegalCommandError);
   });
 
@@ -143,10 +144,10 @@ describe("paying for an ability", () => {
         })),
       ] as const,
     });
-    const state = resolve(createMatch(fast), [basicAt("b0")]);
+    const state = resolve(createMatch(fast), [basicAt("b0")]).state;
     const after = resolve(state, [
       { kind: "act", character: "a0", slot: "skill", target: "b0" },
-    ]);
+    ]).state;
     expect(after.players[0].sharedEssence).toBe(0);
     expect(find(after, "b0").hp).toBeLessThan(50);
   });
@@ -175,7 +176,7 @@ describe("paying for an ability", () => {
         })),
       ] as const,
     });
-    const after = resolve(createMatch(blood), [basicAt("b0")]);
+    const after = resolve(createMatch(blood), [basicAt("b0")]).state;
     expect(find(after, "a0").hp).toBe(85);
     expect(find(after, "b0").hp).toBe(0);
   });
@@ -201,7 +202,7 @@ describe("paying for an ability", () => {
     });
     // Paying should never be a way to die, so a cost equal to full HP is
     // refused rather than resolved into a corpse mid action.
-    expect(() => resolve(createMatch(fatal), [basicAt("b0")])).toThrow(
+    expect(() => resolve(createMatch(fatal), [basicAt("b0")]).state).toThrow(
       IllegalCommandError,
     );
   });
@@ -221,8 +222,10 @@ describe("resolve refuses what legalMoves does not offer", () => {
     expect(offeredSlots.has("soul")).toBe(false);
 
     for (const slot of ["skill", "soul"] as const) {
-      expect(() =>
-        resolve(state, [{ kind: "act", character: "a0", slot, target: "b0" }]),
+      expect(
+        () =>
+          resolve(state, [{ kind: "act", character: "a0", slot, target: "b0" }])
+            .state,
       ).toThrow(IllegalCommandError);
     }
   });
@@ -230,7 +233,7 @@ describe("resolve refuses what legalMoves does not offer", () => {
   it("accepts every command it does offer", () => {
     const state = createMatch(options());
     for (const move of legalMoves(state, 0)) {
-      expect(() => resolve(state, [move])).not.toThrow();
+      expect(() => resolve(state, [move]).state).not.toThrow();
     }
   });
 });
@@ -264,7 +267,7 @@ describe("a match that runs to its end", () => {
       const moves = [...legalMoves(state, 0), ...legalMoves(state, 1)];
       const attack = moves.find((m) => m.kind === "act") ?? moves[0];
       if (attack === undefined) break;
-      state = resolve(state, [attack]);
+      state = resolve(state, [attack]).state;
     }
 
     expect(state.outcome).toEqual({ kind: "decided", winner: 0 });
@@ -280,7 +283,7 @@ describe("determinism with damage in play", () => {
         const moves = [...legalMoves(state, 0), ...legalMoves(state, 1)];
         const chosen = moves.find((m) => m.kind === "act") ?? moves[0];
         if (chosen === undefined) break;
-        state = resolve(state, [chosen]);
+        state = resolve(state, [chosen]).state;
       }
       return state;
     };
@@ -312,8 +315,8 @@ describe("determinism with damage in play", () => {
     // With a crit rate in play the seed decides real outcomes, so two seeds
     // must be able to disagree. Without this the generator could be ignored
     // entirely and every other test would still pass.
-    const one = resolve(build(1), [basicAt("b0")]);
-    const two = resolve(build(9), [basicAt("b0")]);
+    const one = resolve(build(1), [basicAt("b0")]).state;
+    const two = resolve(build(9), [basicAt("b0")]).state;
     expect(find(one, "b0").hp).not.toBe(find(two, "b0").hp);
   });
 });

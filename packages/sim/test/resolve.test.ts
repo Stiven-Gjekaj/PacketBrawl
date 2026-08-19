@@ -52,7 +52,7 @@ function playOut(state: GameState, count: number): [GameState, Command[]] {
     }
     const command: Command = { kind: "wait", character: actor.id };
     given.push(command);
-    current = resolve(current, [command]);
+    current = resolve(current, [command]).state;
   }
   return [current, given];
 }
@@ -67,7 +67,7 @@ describe("legalMoves", () => {
   it("offers the turn to the other player once it passes", () => {
     const state = resolve(createMatch(options(150, 120)), [
       { kind: "wait", character: "a0" },
-    ]);
+    ]).state;
     expect(legalMoves(state, 0)).toEqual([]);
     expect(legalMoves(state, 1).every((m) => m.character === "b0")).toBe(true);
   });
@@ -105,7 +105,7 @@ describe("legalMoves", () => {
 describe("resolve", () => {
   it("gives back the same state when given no commands", () => {
     const state = createMatch(options());
-    expect(resolve(state, [])).toBe(state);
+    expect(resolve(state, []).state).toBe(state);
   });
 
   it("leaves the state it was given untouched", () => {
@@ -122,15 +122,15 @@ describe("resolve", () => {
 
   it("refuses a command that names a character who is not on turn", () => {
     const state = createMatch(options(150, 120));
-    expect(() => resolve(state, [{ kind: "wait", character: "b0" }])).toThrow(
-      IllegalCommandError,
-    );
+    expect(
+      () => resolve(state, [{ kind: "wait", character: "b0" }]).state,
+    ).toThrow(IllegalCommandError);
   });
 
   it("refuses a command that names a character who is not in the match", () => {
     const state = createMatch(options());
-    expect(() =>
-      resolve(state, [{ kind: "wait", character: "nobody" }]),
+    expect(
+      () => resolve(state, [{ kind: "wait", character: "nobody" }]).state,
     ).toThrow(IllegalCommandError);
   });
 
@@ -140,8 +140,8 @@ describe("resolve", () => {
       ...state,
       outcome: { kind: "decided", winner: 0 },
     };
-    expect(() =>
-      resolve(finished, [{ kind: "wait", character: "a0" }]),
+    expect(
+      () => resolve(finished, [{ kind: "wait", character: "a0" }]).state,
     ).toThrow(IllegalCommandError);
   });
 
@@ -153,7 +153,9 @@ describe("resolve", () => {
         character.owner === 1 ? { ...character, hp: 0 } : character,
       ),
     };
-    const after = resolve(oneSideDown, [{ kind: "wait", character: "a0" }]);
+    const after = resolve(oneSideDown, [
+      { kind: "wait", character: "a0" },
+    ]).state;
     expect(after.outcome).toEqual({ kind: "decided", winner: 0 });
   });
 
@@ -174,7 +176,7 @@ describe("resolve", () => {
         character.id === "a0" ? { ...character, hp: 0 } : character,
       ),
     };
-    const after = resolve(doomed, [{ kind: "wait", character: "b0" }]);
+    const after = resolve(doomed, [{ kind: "wait", character: "b0" }]).state;
     expect(after.outcome).toEqual({ kind: "decided", winner: 1 });
   });
 });
@@ -207,10 +209,9 @@ describe("outcomeFor", () => {
     expect(outcomeFor(leftGone)).toEqual({ kind: "decided", winner: 1 });
   });
 
-  // No action can reach this yet, because nothing deals damage. It is here
-  // because an ability that costs the user HP can empty both squads at once,
-  // and the rule has to answer before that ability is written rather than
-  // after somebody finds out that it cannot.
+  // Reachable now that abilities can be priced in HP: an ability that costs
+  // its user the last of their health can empty both squads at once. The rule
+  // answered this before any such ability existed.
   it("gives the win to nobody when both squads are emptied", () => {
     const allGone = squad.map((character) => ({ ...character, hp: 0 }));
     expect(outcomeFor(allGone)).toEqual({ kind: "decided", winner: null });
@@ -241,17 +242,17 @@ describe("replay", () => {
   it("rebuilds the same state from the same commands", () => {
     const opts = options(150, 120);
     const [played, given] = playOut(createMatch(opts), 10);
-    expect(hash(replay(opts, given))).toBe(hash(played));
+    expect(hash(replay(opts, given).state)).toBe(hash(played));
   });
 
   it("rebuilds a state that is equal field for field, not merely alike", () => {
     const opts = options(133, 97);
     const [played, given] = playOut(createMatch(opts), 7);
-    expect(replay(opts, given)).toEqual(played);
+    expect(replay(opts, given).state).toEqual(played);
   });
 
   it("gives the starting state back for an empty command log", () => {
     const opts = options();
-    expect(hash(replay(opts, []))).toBe(hash(createMatch(opts)));
+    expect(hash(replay(opts, []).state)).toBe(hash(createMatch(opts)));
   });
 });
