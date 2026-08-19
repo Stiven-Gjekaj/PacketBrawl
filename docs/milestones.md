@@ -145,7 +145,7 @@ These block later milestones and are not decided yet.
 - **Whether subclasses are mechanical.** Classes are felt rather than named in
   the interface. Whether a subclass is a rule or only design vocabulary is not
   settled.
-- **The visual direction.** The wordmark is drawn, and it sets the direction:
-  a terminal frame, scanlines, and a cursor, with a gold that no phosphor
-  display produces. How that carries into a board, a squad, and the turn
-  forecast is not decided.
+- **Character portraits.** The battle screen is settled: cards on a terminal
+  framed stage, a turn forecast rail, and a rolling log under the squads. Each
+  card carries a portrait slot, and the slots are empty. Nothing can fill them
+  until the spoiler policy above decides who the characters are.
