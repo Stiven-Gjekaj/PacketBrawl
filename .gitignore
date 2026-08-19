@@ -7,6 +7,10 @@ out/
 .next/
 *.tsbuildinfo
 
+# Next writes this on every build and rewrites it if you delete it. It names
+# the framework's own types and nothing this project decided.
+next-env.d.ts
+
 # Test output.
 coverage/
 

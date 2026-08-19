@@ -9,10 +9,12 @@
   },
   "scripts": {
     "test": "vitest run",
-    "typecheck": "tsc --build",
+    "typecheck": "tsc --build && tsc -p apps/web --noEmit",
     "lint": "biome ci .",
     "format": "biome check --write .",
-    "verify": "pnpm lint && pnpm typecheck && pnpm test"
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "dev": "pnpm --filter @packetbrawl/web dev",
+    "build": "pnpm --filter @packetbrawl/web build"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.8",

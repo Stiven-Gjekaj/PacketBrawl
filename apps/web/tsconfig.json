@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // The web app is the opposite of the sim: it is allowed the DOM, and it
+    // needs it. The sim's `types: []` boundary stops at the package edge.
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["src/**/*", "test/**/*", "next-env.d.ts", ".next/types/**/*"],
+  "exclude": ["node_modules", ".next"]
+}

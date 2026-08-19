@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* The palette is lifted from the wordmark, not invented. Green is yours,
+   gold is theirs, and the same gold marks a critical and a Soul. */
+@theme {
+  --color-ink: #070b08;
+  --color-panel: #0a1310;
+  --color-rail: #090f0c;
+  --color-mine: #4ade80;
+  --color-theirs: #fbbf24;
+  --color-lime: #a3e635;
+  --color-body: #d7e8dc;
+  --color-faint: #b4d0be;
+}
+
+html,
+body {
+  background: var(--color-ink);
+  color: var(--color-body);
+}
+
+/* One scanline, tiled. Drawing a rule per line would be a hundred elements
+   that all say the same thing. */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.26) 0px,
+    rgb(0 0 0 / 0.26) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+/* The portrait slot. No art exists, so this is a deliberate empty frame
+   rather than a bad drawing. Swap the hatch for an <img> when art lands. */
+.portrait {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgb(255 255 255 / 0.055) 0 2px,
+    transparent 2px 7px
+  );
+}
