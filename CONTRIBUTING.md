@@ -49,7 +49,7 @@ you one message and can save you a rewritten pull request.
 
 ## Development setup
 
-You need Node 26 and pnpm. The Node version is in `.nvmrc`.
+You need Node 24 and pnpm. The Node version is in `.nvmrc`.
 
     git clone https://github.com/Stiven-Gjekaj/PacketBrawl
     cd PacketBrawl

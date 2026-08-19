@@ -23,7 +23,7 @@ the rules engine.
 
 ## Run what exists
 
-You need Node 26 and pnpm. The Node version is in `.nvmrc`.
+You need Node 24 and pnpm. The Node version is in `.nvmrc`.
 
     git clone https://github.com/Stiven-Gjekaj/PacketBrawl
     cd PacketBrawl

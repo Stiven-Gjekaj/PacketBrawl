@@ -8,7 +8,7 @@ _Four characters a side. One player each. Speed decides who moves._
 
 [![CI](https://img.shields.io/github/actions/workflow/status/Stiven-Gjekaj/PacketBrawl/ci.yml?branch=main&style=for-the-badge&label=ci&labelColor=070b08&logo=githubactions&logoColor=white)](https://github.com/Stiven-Gjekaj/PacketBrawl/actions/workflows/ci.yml)
 ![TypeScript](https://img.shields.io/badge/typescript-34d399?style=for-the-badge&logo=typescript&logoColor=070b08)
-![Node 26](https://img.shields.io/badge/node_26-4ade80?style=for-the-badge&logo=nodedotjs&logoColor=070b08)
+![Node 24](https://img.shields.io/badge/node_24-4ade80?style=for-the-badge&logo=nodedotjs&logoColor=070b08)
 ![pnpm](https://img.shields.io/badge/pnpm-a3e635?style=for-the-badge&logo=pnpm&logoColor=070b08)
 [![All rights reserved](https://img.shields.io/badge/all_rights_reserved-fbbf24?style=for-the-badge&logoColor=070b08)](LICENSE)
 
@@ -71,7 +71,7 @@ Fix the boundary.
 
 ## Quick start
 
-Node 26 and pnpm are needed. The Node version is in `.nvmrc`.
+Node 24 and pnpm are needed. The Node version is in `.nvmrc`.
 
 ```bash
 pnpm install
