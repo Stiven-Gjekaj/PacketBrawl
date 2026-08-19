@@ -29,9 +29,21 @@ Vercel was reading the workspace root instead. With the Root Directory set,
 Vercel finds the app, detects Next, and still installs from the workspace root
 so the sim resolves.
 
-There is no `vercel.json`. Build overrides at the root would fight the Root
-Directory rather than help it, and defaults plus one setting is less to keep
-in step than defaults plus a file that contradicts them.
+**Leave every build override empty.** Build Command, Output Directory and
+Install Command are all blank, so Next is detected and its defaults are used.
+
+This matters more than it sounds, because a `vercel.json` that sets them does
+not simply stop applying when it is deleted: Vercel writes those values into
+the project settings, and they stay. A repository with no `vercel.json` and a
+project still carrying `apps/web/.next` as its Output Directory produces a
+build that compiles every route and then fails looking for its own output at
+`apps/web/apps/web/.next`, because the override is resolved relative to the
+Root Directory rather than the repository.
+
+So there is no `vercel.json` here, and there should not be one. Defaults plus
+one setting is less to keep in step than defaults plus a file contradicting
+them, and a deleted file that leaves its settings behind is worse than
+either.
 
 ## Node
 
