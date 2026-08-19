@@ -119,6 +119,14 @@ PacketBrawl is a full information game.
 The spec offered three as a guess. It is four. Squad order runs from the front
 of the line to the back, and that order decides who an attack reaches.
 
+### The content is hand authored, and it is real
+
+`packages/content` holds eight characters from the published chapters, chosen
+by the rule that they are the eight the chapters name most often. Each cites
+its sources, and `CONTENT_VERSION` is derived from the pack rather than typed,
+so a balance change cannot let an old replay resolve under new numbers without
+saying so.
+
 ### There is no Mnemis content pipeline
 
 The spec described `packages/content` as generated TypeScript, produced by
@@ -166,8 +174,10 @@ packages, and the game are all PacketBrawl.
 
 These block later milestones and are not decided yet.
 
-- **Spoiler policy.** Which arc the game is set in, and whether the content
-  leaks plot to readers of the story.
+- ~~**Spoiler policy.**~~ Settled: published chapters only, and no plot. A
+  soul, a fighting style and a name are things a reader already has. An event
+  is not. Every entry in `packages/content` cites the chapter it came from,
+  and a test holds it to carrying one.
 - **Status effect stats.** Eight stats exist, listed in
   [combat.md](combat.md). Nothing models a status effect yet, so the stats one
   would need are not in the code. They get added when an ability needs one
@@ -177,7 +187,5 @@ These block later milestones and are not decided yet.
 - **Whether subclasses are mechanical.** Classes are felt rather than named in
   the interface. Whether a subclass is a rule or only design vocabulary is not
   settled.
-- **Character portraits.** The battle screen is settled: cards on a terminal
-  framed stage, a turn forecast rail, and a rolling log under the squads. Each
-  card carries a portrait slot, and the slots are empty. Nothing can fill them
-  until the spoiler policy above decides who the characters are.
+- **Character portraits.** The slots are drawn and empty. The characters are
+  settled now, so this waits on art rather than on a decision.

@@ -49,8 +49,7 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   reached, because a critical hit cannot be recovered by comparing two states.
 - `apps/web`, a Next.js interface. A hotseat match is playable in a browser:
   the board, the turn forecast rail, the action bar, and a rolling combat log.
-- Placeholder squads, including a character with no Soul Essence who pays for
-  every ability in HP.
+- Placeholder squads, since replaced by the real cast.
 - `supabase/migrations/`, starting with the `packetbrawl` schema. The game
   shares the Soultale database and keeps its tables out of `public`.
 - `.env.example`, naming the two public values and the one that must never
@@ -61,6 +60,9 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   invariants checked after every command, and a replay of every fuzzed match.
 - A responsive interface. The battle screen works on a phone as well as a
   desktop, from one set of components rather than two.
+- `packages/content`, holding eight characters from the published Soultale
+  chapters. Each cites its sources, and the pack hashes itself into the
+  version a match records.
 
 ### Changed
 

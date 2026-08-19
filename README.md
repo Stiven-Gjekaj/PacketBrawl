@@ -41,10 +41,15 @@ pnpm install && pnpm dev
   exact rather than estimated, and a rolling combat log.
 - 158 tests pass, and no browser appears in any of them.
 
-**The characters are placeholders.** They are deliberately not Soultale names,
-because the spoiler policy is not decided. Their portrait slots are drawn and
-empty for the same reason. `packages/content` replaces them when the real cast
-is settled.
+**The characters are real.** `packages/content` holds eight from the published
+Soultale chapters, each citing where it came from. The pack is hashed into a
+version every match records, so a balance change cannot make an old replay
+resolve under new numbers in silence.
+
+Nothing in it references plot. A soul, a fighting style and a name are things
+a reader already has; an event is not, and the game is read by people who are
+behind on the story. The portrait slots are drawn and still empty, waiting on
+art rather than on a decision.
 
 There is still no network, no account, and no second machine.
 
@@ -135,9 +140,10 @@ PacketBrawl/
 │       ├── src/components/
 │       └── test/
 ├── packages/
-│   └── sim/              the rules. depends on nothing.
-│       ├── src/
-│       └── test/
+│   ├── sim/              the rules. depends on nothing.
+│   │   ├── src/
+│   │   └── test/
+│   └── content/          the characters. hashed into a version.
 ├── docs/
 │   ├── architecture.md   how the pieces fit, and why
 │   ├── combat.md         how a hit resolves, and why
@@ -148,8 +154,8 @@ PacketBrawl/
 └── .github/workflows/    lint, type check, test, CodeQL
 ```
 
-`packages/content` and `packages/bot` do not exist yet. They arrive at the
-milestones that need them, rather than standing empty until then.
+`packages/bot` does not exist yet. It arrives at the milestone that needs it,
+rather than standing empty until then.
 
 ## Testing
 
