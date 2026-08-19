@@ -11,9 +11,13 @@ Where PacketBrawl runs, and the settings that are not in this repository.
 The project is `packetbrawl-web`, on the same Vercel team as `soultale-web`.
 Every push to `main` deploys it.
 
-**Root Directory must be `apps/web`.** This is the one setting that cannot
-live in the repository: Vercel has no `vercel.json` field for it, and it is
-set per project under Settings, Build and Deployment.
+**Root Directory is `apps/web`.** It is set, and it must stay set. This is the
+one setting that cannot live in the repository: Vercel has no `vercel.json`
+field for it, and it is set per project under Settings, Build and Deployment.
+
+A project recreated from scratch needs it again before its first deploy can
+work, which is the reason it is written here rather than left in a dashboard
+nobody reads twice.
 
 Without it a deploy fails before it builds anything, with:
 
