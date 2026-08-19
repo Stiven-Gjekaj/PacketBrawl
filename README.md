@@ -27,23 +27,26 @@ A match ends when one squad has nobody left standing.
 
 ## What runs today
 
-M0 is finished and M1 has its rules but no interface. See the
-[build order](docs/milestones.md).
+**A hotseat match is playable in a browser.** Two players, one keyboard, state
+in memory. That is M1, and it is what the rest of the
+[build order](docs/milestones.md) sits on.
 
-- `packages/sim` holds the whole game: turn order, damage, abilities,
-  resources, targeting, a state hash, and replay. 1281 lines across 11 files.
-- 112 tests pass. There is no browser in any of them.
-- The package depends on nothing at all, and a test enforces that.
+```bash
+pnpm install && pnpm dev
+```
 
-A turn can be spent on a basic, a skill, a soul, or a wait. Damage follows a
-ratio curve that never reaches immunity. Abilities are priced in any mix of a
-shared squad pool, a character's own Soul Essence, and their HP.
-[docs/combat.md](docs/combat.md) explains each rule and what it was chosen
-over.
+- `packages/sim` holds the whole game: turn order, damage, crit, abilities,
+  resources, targeting, a state hash, replay, and an event stream.
+- `apps/web` draws it. Four characters a side, a turn forecast rail that is
+  exact rather than estimated, and a rolling combat log.
+- 158 tests pass, and no browser appears in any of them.
 
-**There is still no game to play.** There is no user interface, no network, no
-account, and no character that a test did not invent. M1 is not finished until
-two people can play a match in a browser and the match is worth playing.
+**The characters are placeholders.** They are deliberately not Soultale names,
+because the spoiler policy is not decided. Their portrait slots are drawn and
+empty for the same reason. `packages/content` replaces them when the real cast
+is settled.
+
+There is still no network, no account, and no second machine.
 
 ## The one architectural rule
 
@@ -80,7 +83,7 @@ Run everything the way CI runs it:
 pnpm verify
 ```
 
-That is lint, then type check, then the tests. The parts run on their own too:
+That is lint, type check, tests, then the build. The parts run alone too:
 
 ```bash
 pnpm test
@@ -92,6 +95,12 @@ pnpm typecheck
 
 ```bash
 pnpm format
+```
+
+Run the game itself:
+
+```bash
+pnpm dev
 ```
 
 ## How the turn order works
@@ -120,6 +129,11 @@ it to what the match goes on to do.
 
 ```
 PacketBrawl/
+├── apps/
+│   └── web/              the interface. imports the sim.
+│       ├── src/lib/      what the screen shows, as pure functions
+│       ├── src/components/
+│       └── test/
 ├── packages/
 │   └── sim/              the rules. depends on nothing.
 │       ├── src/
@@ -133,9 +147,8 @@ PacketBrawl/
 └── .github/workflows/    lint, type check, test, CodeQL
 ```
 
-`apps/web`, `packages/content`, and `packages/bot` do not exist yet. They
-arrive at the milestones that need them, rather than standing empty until
-then.
+`packages/content` and `packages/bot` do not exist yet. They arrive at the
+milestones that need them, rather than standing empty until then.
 
 ## Testing
 

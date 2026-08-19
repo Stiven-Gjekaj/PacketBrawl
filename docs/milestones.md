@@ -14,7 +14,7 @@ Each milestone ships and is tested before the next one starts.
 | | Milestone | State |
 |---|---|---|
 | M0 | Skeleton. The rules package, its types, a resolve, and tests. No UI, no network. | Done |
-| M1 | Local hotseat. Full combat playable in a browser, two players one keyboard, state in memory. | Rules done, no interface |
+| M1 | Local hotseat. Full combat playable in a browser, two players one keyboard, state in memory. | Playable |
 | M2 | Determinism harness. Replay tests and fuzzing over random legal commands, asserting no crash and no divergence. | Not started |
 | M3 | Accounts. Auth, profiles, the squad builder, persistence. | Not started |
 | M4 | Live matches. Server routes, the command log, realtime, per turn deadlines. | Not started |
@@ -57,9 +57,17 @@ and the reasoning behind each one.
   reached, which is what a combat log needs and what no comparison of two
   states could recover.
 
-**There is still no interface**, and no character that a test did not invent.
-M1 is not finished until two people can play a match in a browser and the
-match is worth playing.
+The interface is built. `apps/web` draws the board, the forecast rail, the
+action bar, and the log, and a hotseat match plays through to a winner.
+
+What the screen shows is worked out by plain functions in `apps/web/src/lib`,
+so it is tested without a browser like everything else here. The components
+only draw what those return.
+
+**M1 is playable, not finished.** Finished means the match is worth playing,
+and that is a judgement nobody can make from a test. The characters are
+placeholders and their portraits are empty until the spoiler policy decides
+who they are.
 
 ## Where this left the specification
 

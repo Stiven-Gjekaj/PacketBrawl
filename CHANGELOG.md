@@ -47,6 +47,10 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
 - Crit rate and crit damage, taking the stat block from six to eight.
 - An event stream. `resolve` reports what happened as well as the state it
   reached, because a critical hit cannot be recovered by comparing two states.
+- `apps/web`, a Next.js interface. A hotseat match is playable in a browser:
+  the board, the turn forecast rail, the action bar, and a rolling combat log.
+- Placeholder squads, including a character with no Soul Essence who pays for
+  every ability in HP.
 
 ### Changed
 

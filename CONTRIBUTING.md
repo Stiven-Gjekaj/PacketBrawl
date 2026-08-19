@@ -25,8 +25,9 @@ If that is not what you want, an issue is still welcome and costs you nothing.
 
 ## What is useful right now
 
-The project is at milestone M0 of seven. There is a rules engine and nothing
-else: no interface, no network, no character, and no damage.
+The project is at milestone M1 of seven. A hotseat match is playable in a
+browser: `pnpm install && pnpm dev`. There is no network, no account, and no
+character that is not a placeholder.
 
 So the useful contributions today are small and specific:
 
@@ -39,6 +40,9 @@ So the useful contributions today are small and specific:
   holds the rules engine to depending on nothing. If you can get an import,
   a global, or a clock past it, that is worth more than a feature.
 - **A case the turn order gets wrong.** Two speeds and the order you expected.
+- **A move the screen offers that the rules refuse.** The interface shows the
+  refusal rather than swallowing it, so a screenshot of that message is a
+  complete report.
 
 Do not build a milestone that is not started. Open an issue first. This costs
 you one message and can save you a rewritten pull request.
@@ -62,6 +66,10 @@ You need Node 26 and pnpm. The Node version is in `.nvmrc`.
 | The damage a hit deals | `packages/sim/src/damage.ts` |
 | What an ability is, and who it reaches | `packages/sim/src/ability.ts` |
 | What a state or a command holds | `packages/sim/src/types.ts` |
+| What a resolved command reports | `packages/sim/src/events.ts` |
+| What the screen shows from a state | `apps/web/src/lib/view.ts` |
+| How the log reads | `apps/web/src/lib/log.ts` |
+| The board, rail, action bar, or log | `apps/web/src/components/` |
 | Applying a command | `packages/sim/src/resolve.ts` |
 | The state hash | `packages/sim/src/hash.ts` |
 | The seeded generator | `packages/sim/src/rng.ts` |
