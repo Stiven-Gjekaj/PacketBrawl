@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "vitest run",
-    "typecheck": "tsc --build && tsc -p apps/web --noEmit",
+    "typecheck": "tsc -p packages/sim --noEmit && tsc -p apps/web --noEmit",
     "lint": "biome ci .",
     "format": "biome check --write .",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",

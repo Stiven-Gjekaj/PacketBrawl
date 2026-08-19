@@ -44,7 +44,7 @@ export {
   strike,
 } from "./damage.ts";
 export type { MatchEvent, ResolveResult } from "./events.ts";
-export { canonicalize, hash } from "./hash.ts";
+export { canonicalize, digest, hash } from "./hash.ts";
 export { replay } from "./replay.ts";
 export {
   abilityAt,

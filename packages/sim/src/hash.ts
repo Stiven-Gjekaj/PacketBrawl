@@ -63,9 +63,16 @@ const FNV_OFFSET_BASIS = 0xcbf29ce484222325n;
 const FNV_PRIME = 0x100000001b3n;
 const SIXTY_FOUR_BITS = 0xffffffffffffffffn;
 
-/** Hash a state to sixteen hexadecimal characters. */
-export function hash(state: GameState): string {
-  const text = canonicalize(state);
+/**
+ * Hash any value a state could hold, to sixteen hexadecimal characters.
+ *
+ * `hash` is this with the argument narrowed to a state. It is separate
+ * because a content pack hashes itself the same way to produce the
+ * `content_version` a match records, and two implementations of one digest
+ * would eventually disagree about a match nobody could then replay.
+ */
+export function digest(value: unknown): string {
+  const text = canonicalize(value);
 
   // Each character is folded in as its two code units, high half first.
   //
@@ -78,13 +85,18 @@ export function hash(state: GameState): string {
   // Nothing is lost by folding code units. A JavaScript string is a sequence
   // of UTF-16 code units by specification, so charCodeAt gives the same
   // numbers on every engine.
-  let digest = FNV_OFFSET_BASIS;
+  let running = FNV_OFFSET_BASIS;
   for (let index = 0; index < text.length; index += 1) {
     const unit = text.charCodeAt(index);
-    digest ^= BigInt(unit >>> 8);
-    digest = (digest * FNV_PRIME) & SIXTY_FOUR_BITS;
-    digest ^= BigInt(unit & 0xff);
-    digest = (digest * FNV_PRIME) & SIXTY_FOUR_BITS;
+    running ^= BigInt(unit >>> 8);
+    running = (running * FNV_PRIME) & SIXTY_FOUR_BITS;
+    running ^= BigInt(unit & 0xff);
+    running = (running * FNV_PRIME) & SIXTY_FOUR_BITS;
   }
-  return digest.toString(16).padStart(16, "0");
+  return running.toString(16).padStart(16, "0");
+}
+
+/** Hash a state to sixteen hexadecimal characters. */
+export function hash(state: GameState): string {
+  return digest(state);
 }

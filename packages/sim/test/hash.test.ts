@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createMatch } from "../src/create-match.ts";
-import { canonicalize, hash } from "../src/hash.ts";
+import { canonicalize, digest, hash } from "../src/hash.ts";
 import type { GameState, Stats } from "../src/types.ts";
 import { abilities } from "./support.ts";
 
@@ -98,5 +98,23 @@ describe("hash", () => {
   // recorded hash meaningless and has to be a decision rather than a slip.
   it("produces the recorded value", () => {
     expect(hash(match())).toBe("00875b027b41d8b0");
+  });
+});
+
+describe("digest", () => {
+  it("hashes a value that is not a state", () => {
+    expect(digest({ a: 1 })).toMatch(/^[0-9a-f]{16}$/);
+    expect(digest([1, 2, 3])).toMatch(/^[0-9a-f]{16}$/);
+  });
+
+  // A content pack hashes itself with this to produce the version a match
+  // records. Two implementations of one digest would eventually disagree
+  // about a match nobody could then replay.
+  it("gives a state the same answer that hash does", () => {
+    expect(digest(match())).toBe(hash(match()));
+  });
+
+  it("gives different values different hashes", () => {
+    expect(digest({ a: 1 })).not.toBe(digest({ a: 2 }));
   });
 });

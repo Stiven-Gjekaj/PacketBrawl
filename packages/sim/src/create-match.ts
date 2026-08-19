@@ -37,6 +37,15 @@ export interface MatchOptions {
   readonly seed: number;
   /** Two squads, front of the line first. Each holds exactly four members. */
   readonly squads: readonly [readonly SquadMember[], readonly SquadMember[]];
+  /**
+   * The version of the content these squads came from.
+   *
+   * The sim cannot read this off the characters: it depends on nothing, and a
+   * content pack depends on it, so the arrow only points one way. The caller
+   * knows which pack it loaded and says so, and the match records it for the
+   * replay that outlives the next rebalance.
+   */
+  readonly contentVersion?: string;
 }
 
 function buildSquad(
@@ -90,7 +99,7 @@ export function createMatch(options: MatchOptions): GameState {
 
   return {
     simVersion: SIM_VERSION,
-    contentVersion: CONTENT_VERSION,
+    contentVersion: options.contentVersion ?? CONTENT_VERSION,
     matchId: options.matchId,
     rng: createRng(options.seed),
     actionOrdinal: 0,
