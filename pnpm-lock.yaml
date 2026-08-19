@@ -23,6 +23,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@packetbrawl/content':
+        specifier: workspace:*
+        version: link:../../packages/content
       '@packetbrawl/sim':
         specifier: workspace:*
         version: link:../../packages/sim
@@ -54,6 +57,12 @@ importers:
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
+
+  packages/content:
+    dependencies:
+      '@packetbrawl/sim':
+        specifier: workspace:*
+        version: link:../sim
 
   packages/sim: {}
 

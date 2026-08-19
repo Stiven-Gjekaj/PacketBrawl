@@ -1,7 +1,0 @@
-{
-  "files": [],
-  "references": [
-    { "path": "./packages/sim" },
-    { "path": "./packages/sim/tsconfig.test.json" }
-  ]
-}
