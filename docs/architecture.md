@@ -17,8 +17,11 @@ packages/sim/          the rules. depends on nothing.
 │   ├── types.ts           what a match, a character, and a command are
 │   ├── rng.ts             the seeded generator
 │   ├── action-value.ts    who acts next, and the forecast
+│   ├── damage.ts          what a hit takes off, and the critical roll
+│   ├── ability.ts         what an ability costs, and who it reaches
 │   ├── create-match.ts    the state a match starts from
 │   ├── resolve.ts         applying a command, and the win rule
+│   ├── events.ts          what a resolved command reports
 │   ├── replay.ts          a starting point plus a log, back to a state
 │   ├── hash.ts            a state written as one comparable string
 │   └── version.ts         the rules version and the content version

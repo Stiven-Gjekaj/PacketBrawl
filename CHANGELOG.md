@@ -45,6 +45,8 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   Essence, and targeting by position. [docs/combat.md](docs/combat.md) records
   each rule and what it was chosen over.
 - Crit rate and crit damage, taking the stat block from six to eight.
+- An event stream. `resolve` reports what happened as well as the state it
+  reached, because a critical hit cannot be recovered by comparing two states.
 
 ### Changed
 

@@ -53,6 +53,9 @@ and the reasoning behind each one.
 - The three actions: basic, skill, and soul.
 - Essence, filling on acting and on being hit.
 - Targeting by position, including a blast that catches both neighbours.
+- The event stream. `resolve` reports what happened as well as the state it
+  reached, which is what a combat log needs and what no comparison of two
+  states could recover.
 
 **There is still no interface**, and no character that a test did not invent.
 M1 is not finished until two people can play a match in a browser and the

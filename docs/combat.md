@@ -174,6 +174,30 @@ exactly that question about the design.
 It is worth writing down that **crit is the first thing to take back out** if
 M1 reads as random rather than tactical. It is two stats and one line.
 
+## What a resolved command reports
+
+`resolve` gives back the state and an account of how it was reached.
+
+    acted         who spent the turn, on which slot, and the ability's name
+    hit           source, target, damage, and whether it was a critical
+    fell          a character reached zero HP on this action
+    sharedGained  what a basic put into the squad's shared pool
+    decided       the match ended, and who won
+
+A state cannot be read backwards into these. A critical hit and an ordinary
+large hit leave exactly the same HP behind, so no comparison of two states
+tells them apart. `strike` knows which it was, and without this it would throw
+that away.
+
+A fall is reported after every hit of the action rather than beside the hit
+that caused it. A wide attack that kills two characters landed both hits at
+the same moment, and a death between them would say otherwise.
+
+**The events are not part of the state and never reach `hash`.** A match is
+its commands. The events are what those commands are read to mean, so
+rewording a report costs nothing, while hashing one would void every recorded
+match.
+
 ## What is not built
 
 - Healing, buffs, and status effects. An ability aimed at the actor's own side
