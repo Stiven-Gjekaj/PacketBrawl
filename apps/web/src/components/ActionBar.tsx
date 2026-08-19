@@ -13,7 +13,7 @@ export function ActionBar({
   onChoose: (slot: ActionView["slot"]) => void;
 }) {
   return (
-    <div className="flex gap-3">
+    <div className="grid grid-cols-2 gap-2 md:flex md:gap-3">
       {actions.map((action) => {
         const soul = action.slot === "soul";
         const picked = chosen === action.slot;
@@ -31,7 +31,7 @@ export function ActionBar({
             type="button"
             disabled={!action.affordable}
             onClick={() => onChoose(action.slot)}
-            className={`grow border px-3.5 py-3 text-left ${tone} ${
+            className={`flex min-h-[56px] flex-col justify-center overflow-hidden border px-2.5 py-2 text-left md:grow md:px-3.5 md:py-3 ${tone} ${
               action.affordable ? "cursor-pointer" : "cursor-not-allowed"
             } ${picked ? "ring-1 ring-mine/60" : ""}`}
           >
@@ -52,7 +52,7 @@ export function ActionBar({
               ) : null}
             </div>
             <div
-              className={`mt-1.5 text-[10px] ${action.affordable ? "text-body/65" : "text-body/25"}`}
+              className={`mt-1 line-clamp-2 text-[9px] md:mt-1.5 md:line-clamp-none md:text-[10px] ${action.affordable ? "text-body/65" : "text-body/25"}`}
             >
               {action.name === "Wait" ? action.detail : `${action.name} - ${action.detail}`}
             </div>

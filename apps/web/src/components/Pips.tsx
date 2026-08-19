@@ -21,7 +21,7 @@ export function Pips({
       {Array.from({ length: total }, (_, index) => (
         <span
           key={index}
-          className={`size-[9px] rotate-45 ${index < filled ? colour : `border ${edge}`}`}
+          className={`size-[7px] rotate-45 md:size-[9px] ${index < filled ? colour : `border ${edge}`}`}
         />
       ))}
     </span>

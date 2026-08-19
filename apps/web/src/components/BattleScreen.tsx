@@ -1,7 +1,6 @@
 "use client";
 
 import { useMatch } from "../lib/store.ts";
-import { tail } from "../lib/log.ts";
 import { actions as actionsOf, cards as cardsOf, onTurn, rail as railOf } from "../lib/view.ts";
 import { ActionBar } from "./ActionBar.tsx";
 import { Card } from "./Card.tsx";
@@ -66,7 +65,7 @@ export function BattleScreen() {
 
   return (
     <main className="scanlines relative mx-auto flex h-dvh w-full max-w-[1800px] flex-col overflow-hidden bg-ink">
-      <header className="flex h-10 shrink-0 items-center gap-3 border-b border-mine/20 bg-panel px-4.5">
+      <header className="flex h-10 shrink-0 items-center gap-2 border-b border-mine/20 bg-panel px-3 md:gap-3 md:px-4.5">
         <span className="text-[12px] font-semibold tracking-[0.18em] text-mine">
           &gt; PACKETBRAWL
         </span>
@@ -74,24 +73,24 @@ export function BattleScreen() {
           hotseat · turn {state.actionOrdinal}
         </span>
         <span className="grow" />
-        <span className="text-[11px] tracking-[0.1em] text-faint/45">
+        <span className="hidden text-[11px] tracking-[0.1em] text-faint/45 lg:inline">
           full information · no interrupts
         </span>
       </header>
 
-      <div className="flex min-h-0 grow">
+      <div className="flex min-h-0 grow flex-col md:flex-row">
         <Rail entries={upcoming} />
 
-        <div className="flex min-h-0 grow flex-col px-6 pt-4 pb-4">
-          <div className="flex min-h-0 flex-1 flex-col justify-center">
+        <div className="flex min-h-0 grow flex-col px-2.5 pt-3 pb-3 md:px-6 md:pt-4 md:pb-4">
+          <div className="flex min-h-0 flex-1 flex-col justify-start md:justify-center">
           <div className="mb-2.5 flex items-center justify-between">
             {header(1)}
-            <span className="text-[10px] tracking-[0.14em] text-theirs/55">
+            <span className="hidden text-[10px] tracking-[0.14em] text-theirs/55 sm:inline">
               ← FRONT OF LINE
             </span>
           </div>
 
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-1.5 md:gap-4">
             {side(1).map((card) => (
               <Card
                 key={card.id}
@@ -103,17 +102,24 @@ export function BattleScreen() {
             ))}
           </div>
 
-          <div className="my-5 flex items-center gap-4">
+          <div className="my-3 flex items-center gap-3 md:my-5 md:gap-4">
             <div className="h-px grow bg-mine/18" />
-            <div className="text-[10px] tracking-[0.28em] text-faint/40">
-              {pending === null
-                ? "BLAST · TARGET AND BOTH NEIGHBOURS"
-                : `AIMING · ${aimingAt?.name?.toUpperCase() ?? ""}`}
+            <div className="text-[9px] tracking-[0.2em] text-faint/40 md:text-[10px] md:tracking-[0.28em]">
+              {pending === null ? (
+                <>
+                  <span className="md:hidden">BLAST HITS THREE</span>
+                  <span className="hidden md:inline">
+                    BLAST · TARGET AND BOTH NEIGHBOURS
+                  </span>
+                </>
+              ) : (
+                `AIMING · ${aimingAt?.name?.toUpperCase() ?? ""}`
+              )}
             </div>
             <div className="h-px grow bg-mine/18" />
           </div>
 
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-1.5 md:gap-4">
             {side(0).map((card) => (
               <Card
                 key={card.id}
@@ -128,7 +134,7 @@ export function BattleScreen() {
           <div className="mt-2.5">{header(0)}</div>
           </div>
 
-          <Log lines={tail(lines, 6)} />
+          <Log lines={lines} />
 
           {refused !== null ? (
             <div className="mb-2 border border-theirs/50 bg-theirs/10 px-3 py-2 text-[11px] text-theirs">

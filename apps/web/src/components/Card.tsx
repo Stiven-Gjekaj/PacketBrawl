@@ -8,6 +8,8 @@ import { Pips } from "./Pips.tsx";
 // sprawling across an ultrawide screen.
 const SIZE = "max-w-[340px]";
 
+const PAD = "px-1.5 pt-1.5 pb-2 md:px-3 md:pt-2 md:pb-3";
+
 const FRAME: Record<CardView["mood"], string> = {
   acting: "border-2 border-mine bg-mine/12 shadow-[0_0_24px_rgb(74_222_128/0.30)]",
   target: "border-2 border-theirs bg-theirs/16 shadow-[0_0_24px_rgb(251_191_36/0.30)]",
@@ -35,23 +37,23 @@ export function Card({
   const body = (
     <>
       <div
-        className={`portrait flex aspect-[16/7] max-h-[150px] min-h-[58px] items-center justify-center border-b font-[family-name:var(--font-display)] text-[clamp(21px,3vw,34px)] ${theirs ? "border-theirs/45" : "border-mine/30"} ${ink}`}
+        className={`portrait flex aspect-[5/4] max-h-[150px] min-h-[46px] items-center justify-center border-b font-[family-name:var(--font-display)] text-[clamp(15px,4.5vw,34px)] md:aspect-[16/7] md:min-h-[58px] md:text-[clamp(21px,3vw,34px)] ${theirs ? "border-theirs/45" : "border-mine/30"} ${ink}`}
       >
         {card.initial}
       </div>
-      <div className="px-3 pt-2 pb-3">
-        <div className="flex items-baseline gap-2">
+      <div className={PAD}>
+        <div className="flex items-baseline gap-1 md:gap-2">
           <span
-            className={`font-[family-name:var(--font-display)] text-[15px] font-semibold ${ink}`}
+            className={`truncate font-[family-name:var(--font-display)] text-[10px] font-semibold md:text-[15px] ${ink}`}
           >
             {card.name}
           </span>
-          <span className={`text-[9px] tracking-[0.1em] ${theirs ? "text-theirs/45" : "text-mine/45"}`}>
+          <span className={`hidden text-[9px] tracking-[0.1em] sm:inline ${theirs ? "text-theirs/45" : "text-mine/45"}`}>
             {String(card.slot + 1).padStart(2, "0")}
           </span>
         </div>
         <div
-          className={`mt-1.5 h-3 overflow-hidden text-[9px] tracking-[0.14em] ${
+          className={`mt-1 hidden h-3 overflow-hidden text-[9px] tracking-[0.14em] md:mt-1.5 md:block ${
             card.mood === "acting" || card.mood === "target"
               ? `${ink} font-semibold`
               : "text-faint/65"
@@ -59,14 +61,14 @@ export function Card({
         >
           {card.note}
         </div>
-        <div className="mt-1.5 h-[7px] border border-mine/20 bg-[#0a1a12]">
+        <div className="mt-1 h-[6px] border border-mine/20 bg-[#0a1a12] md:mt-1.5 md:h-[7px]">
           <div
             className={`h-full ${theirs ? "bg-theirs" : "bg-mine"}`}
             style={{ width: `${card.hpPercent}%` }}
           />
         </div>
-        <div className="mt-1.5 flex items-center justify-between">
-          <span className="text-[10px] text-body/75">
+        <div className="mt-1 flex items-center justify-between gap-1 md:mt-1.5">
+          <span className="text-[9px] text-body/75 md:text-[10px]">
             {card.hp}/{card.maxHp}
           </span>
           {/* A character with no Essence at all shows no pips rather than three
@@ -78,7 +80,9 @@ export function Card({
               tone={card.essence === card.maxEssence ? "theirs" : "lime"}
             />
           ) : (
-            <span className="text-[9px] tracking-[0.12em] text-body/35">BLOOD</span>
+            <span className="text-[8px] tracking-[0.1em] text-body/35 md:text-[9px] md:tracking-[0.12em]">
+              BLOOD
+            </span>
           )}
         </div>
       </div>
