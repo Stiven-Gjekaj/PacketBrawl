@@ -11,6 +11,13 @@ Where PacketBrawl runs, and the settings that are not in this repository.
 The project is `packetbrawl-web`, on the same Vercel team as `soultale-web`.
 Every push to `main` deploys it.
 
+It is served at **play.readsoultale.com**, a subdomain of the Soultale site.
+The game and the story share a name to a reader, so they share a domain.
+
+Nothing protects it: no password, no Vercel Authentication, no allowlist.
+Anybody with the address can play, and today they play against placeholder
+characters.
+
 **Root Directory is `apps/web`.** It is set, and it must stay set. This is the
 one setting that cannot live in the repository: Vercel has no `vercel.json`
 field for it, and it is set per project under Settings, Build and Deployment.
