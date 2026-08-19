@@ -6,10 +6,21 @@ import {
   resolve,
 } from "@packetbrawl/sim";
 import { describe, expect, it } from "vitest";
-import { placeholderMatch } from "../src/lib/squads.ts";
+import { soultaleMatch } from "../src/lib/squads.ts";
 import { actions, cards, commandFor, hpPercent, rail, wouldReach } from "../src/lib/view.ts";
 
-const start = () => createMatch(placeholderMatch(1));
+const start = () => createMatch(soultaleMatch(1));
+
+/** The same match, with one named character forced to the front of the order. */
+function onTurnFor(id: string) {
+  const state = start();
+  return {
+    ...state,
+    characters: state.characters.map((c) =>
+      c.id === id ? { ...c, actionValue: 0 } : { ...c, actionValue: 999_999 },
+    ),
+  };
+}
 
 describe("hpPercent", () => {
   // The bar and the number beside it must agree, or the screen contradicts
@@ -52,10 +63,10 @@ describe("cards", () => {
     const downed = {
       ...state,
       characters: state.characters.map((c) =>
-        c.id === "GLASS" ? { ...c, hp: 0 } : c,
+        c.id === "Maeve" ? { ...c, hp: 0 } : c,
       ),
     };
-    const card = cards(downed, null, null).find((c) => c.id === "GLASS");
+    const card = cards(downed, null, null).find((c) => c.id === "Maeve");
     expect(card?.mood).toBe("fallen");
     expect(card?.hpPercent).toBe(0);
   });
@@ -65,20 +76,20 @@ describe("wouldReach", () => {
   // The whole reason squad order is a position. Aiming a blast has to show
   // the neighbours it catches before the player commits to it.
   it("catches the target and both neighbours for a blast", () => {
-    const state = start();
-    const thorn = state.characters.find((c) => c.id === "THORN");
-    const aiming = {
-      ...state,
-      characters: state.characters.map((c) =>
-        c.id === thorn?.id ? { ...c, actionValue: 0 } : { ...c, actionValue: 999_999 },
-      ),
-    };
-    const reached = wouldReach(aiming, { slot: "skill" }, "HOLLOW");
-    expect([...reached].sort()).toEqual(["CINDER", "HOLLOW", "MARROW"]);
+    // Alexander's skill is a blast, and the test says so out loud. A content
+    // change that made it single would otherwise leave this green while it
+    // checked nothing about blasts at all.
+    const state = onTurnFor("Alexander");
+    expect(
+      state.characters.find((c) => c.id === "Alexander")?.abilities.skill.target,
+    ).toBe("blast");
+
+    const reached = wouldReach(state, { slot: "skill" }, "Lisa");
+    expect([...reached].sort()).toEqual(["Johann", "Lisa", "Nilah"]);
   });
 
   it("reaches nobody when no action is pending", () => {
-    expect(wouldReach(start(), null, "HOLLOW").size).toBe(0);
+    expect(wouldReach(start(), null, "Lisa").size).toBe(0);
   });
 });
 
@@ -126,14 +137,7 @@ describe("actions", () => {
   });
 
   it("says which actions need aiming", () => {
-    const state = start();
-    const thorn = {
-      ...state,
-      characters: state.characters.map((c) =>
-        c.id === "THORN" ? { ...c, actionValue: 0 } : { ...c, actionValue: 999_999 },
-      ),
-    };
-    const list = actions(thorn);
+    const list = actions(onTurnFor("Alexander"));
     expect(list.find((a) => a.slot === "skill")?.needsTarget).toBe(true);
     // Briarheart reaches every enemy, so there is nothing to aim.
     expect(list.find((a) => a.slot === "soul")?.needsTarget).toBe(false);
@@ -145,12 +149,12 @@ describe("commandFor", () => {
   it("builds a command the sim accepts", () => {
     const state = start();
     const actor = nextToAct(state);
-    const command = commandFor(state, "basic", "CINDER");
+    const command = commandFor(state, "basic", "Nilah");
     expect(command).toEqual({
       kind: "act",
       character: actor?.id,
       slot: "basic",
-      target: "CINDER",
+      target: "Nilah",
     });
     expect(() => resolve(state, command === null ? [] : [command])).not.toThrow();
   });
@@ -165,26 +169,16 @@ describe("commandFor", () => {
 });
 
 describe("aiming marks the right side", () => {
-  const aiming = () => {
-    const state = start();
-    return {
-      ...state,
-      characters: state.characters.map((c) =>
-        c.id === "THORN"
-          ? { ...c, actionValue: 0 }
-          : { ...c, actionValue: 999_999 },
-      ),
-    };
-  };
+  const aiming = () => onTurnFor("Alexander");
 
   it("offers every living enemy as a target", () => {
     const board = cards(aiming(), { slot: "basic" }, null);
     const offered = board.filter((c) => c.mood === "reachable" || c.mood === "target");
     expect(offered.map((c) => c.id).sort()).toEqual([
-      "CINDER",
-      "GLASS",
-      "HOLLOW",
-      "MARROW",
+      "Johann",
+      "Lisa",
+      "Maeve",
+      "Nilah",
     ]);
   });
 
@@ -192,14 +186,14 @@ describe("aiming marks the right side", () => {
   // an ally invites the player to try clicking one.
   it("does not call an ally out of reach", () => {
     const board = cards(aiming(), { slot: "basic" }, null);
-    const mine = board.filter((c) => c.owner === 0 && c.id !== "THORN");
+    const mine = board.filter((c) => c.owner === 0 && c.id !== "Alexander");
     expect(mine.map((c) => c.mood)).toEqual(["idle", "idle", "idle"]);
   });
 
   it("shows the neighbours a blast would catch before it is fired", () => {
-    const board = cards(aiming(), { slot: "skill" }, "HOLLOW");
+    const board = cards(aiming(), { slot: "skill" }, "Lisa");
     const caught = board.filter((c) => c.mood === "splash" || c.mood === "target");
-    expect(caught.map((c) => c.id).sort()).toEqual(["CINDER", "HOLLOW", "MARROW"]);
+    expect(caught.map((c) => c.id).sort()).toEqual(["Johann", "Lisa", "Nilah"]);
   });
 });
 

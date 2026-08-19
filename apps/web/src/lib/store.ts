@@ -10,7 +10,7 @@ import {
 } from "@packetbrawl/sim";
 import { create } from "zustand";
 import { type LogLine, toLines } from "./log.ts";
-import { placeholderMatch } from "./squads.ts";
+import { soultaleMatch } from "./squads.ts";
 import { actions, commandFor, type Pending } from "./view.ts";
 
 /**
@@ -46,7 +46,7 @@ interface MatchStore {
 }
 
 function begin(seed: number): GameState {
-  const state = createMatch(placeholderMatch(seed));
+  const state = createMatch(soultaleMatch(seed));
   rememberOwners(state);
   return state;
 }
