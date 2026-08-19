@@ -51,6 +51,10 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   the board, the turn forecast rail, the action bar, and a rolling combat log.
 - Placeholder squads, including a character with no Soul Essence who pays for
   every ability in HP.
+- `supabase/migrations/`, starting with the `packetbrawl` schema. The game
+  shares the Soultale database and keeps its tables out of `public`.
+- `.env.example`, naming the two public values and the one that must never
+  carry a `NEXT_PUBLIC_` prefix.
 
 ### Changed
 
@@ -61,6 +65,9 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   [docs/milestones.md](docs/milestones.md) records why.
 - **The licence.** The project was MIT and is now proprietary, with all rights
   reserved. The source is readable, which is not the same as free to use.
+
+- Deployments are on. `apps/web` exists and builds, which is the condition the
+  block named when it went in.
 
 ### Removed
 

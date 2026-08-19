@@ -115,8 +115,12 @@ gone, so `tools/mnemis-export/` is not in the repository structure.
 ### The schema is not written yet
 
 The spec said `supabase/migrations/0001_init.sql` was already written and
-should be read before writing queries. It does not exist. It gets written at
-M3, and it will not carry the `pending_moves` table.
+should be read before writing queries. It did not exist.
+
+`supabase/migrations/0001_packetbrawl_schema.sql` now does, and it creates a
+namespace and nothing else. PacketBrawl shares the Soultale database in a
+`packetbrawl` schema, for the reasons in [architecture.md](architecture.md).
+The tables arrive at M3 with accounts, and none of them is `pending_moves`.
 
 ### replay takes the match options, not a seed
 

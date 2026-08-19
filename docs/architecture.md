@@ -174,6 +174,33 @@ level security to hide a move until both players had chosen. Turns are
 sequential now, so none of that is needed. PacketBrawl is a full information
 game.
 
+## Where the data lives
+
+PacketBrawl shares the **Soultale** Supabase project rather than having one of
+its own, and keeps its tables in a `packetbrawl` schema rather than in
+`public`.
+
+Sharing is the point: one account works on readsoultale.com and in the game.
+The audience is small and scattered across timezones, and a reader of the
+story is already a player. Two projects would mean two logins unless they were
+federated, which is real work to build and would be wasted the moment somebody
+wanted one account anyway.
+
+The schema is what stops that being reckless. Two projects growing tables in
+`public` collide on the first name they both want, and a migration written for
+one arrives in the other's namespace. A named schema makes that boundary
+something Postgres enforces rather than something everybody remembers.
+
+**It does not isolate the blast radius**, and that is worth saying plainly. One
+database is one database. A bad migration or a wrong role grant still reaches
+both projects, and live match traffic is far spikier than a reading site's.
+That risk is accepted rather than overlooked, and it is the reason to split
+later if either side outgrows it.
+
+Migrations live in `supabase/migrations/` and are the source of truth. A change
+applied to the database and not written down here is a change the next reader
+cannot find.
+
 ## Content
 
 Characters and abilities are not database rows. They are typed TypeScript,
