@@ -15,7 +15,7 @@ Each milestone ships and is tested before the next one starts.
 |---|---|---|
 | M0 | Skeleton. The rules package, its types, a resolve, and tests. No UI, no network. | Done |
 | M1 | Local hotseat. Full combat playable in a browser, two players one keyboard, state in memory. | Playable |
-| M2 | Determinism harness. Replay tests and fuzzing over random legal commands, asserting no crash and no divergence. | Not started |
+| M2 | Determinism harness. Replay tests and fuzzing over random legal commands, asserting no crash and no divergence. | Done |
 | M3 | Accounts. Auth, profiles, the squad builder, persistence. | Not started |
 | M4 | Live matches. Server routes, the command log, realtime, per turn deadlines. | Not started |
 | M5 | Bots. At minimum a greedy one ply evaluator. | Not started |
@@ -68,6 +68,26 @@ only draw what those return.
 and that is a judgement nobody can make from a test. The characters are
 placeholders and their portraits are empty until the spoiler policy decides
 who they are.
+
+## What M2 delivered
+
+A seeded fuzzer that plays random legal commands and holds every state to
+what must be true of it.
+
+- 120 matches, 1262 commands, 1430 hits, 567 characters felled, 388 abilities
+  paid for in blood. Every match reaches a decision.
+- It plays only what `legalMoves` offers, so a command the rules offer and
+  then refuse arrives as a thrown error. That gap is the hole a cheating
+  client walks through, and `SECURITY.md` names it in scope.
+- Every fuzzed match is replayed from its command log and compared by hash and
+  field by field.
+- The fuzzer is a pure function of one seed, so a failure is reported as a
+  number rather than described.
+
+It was proved by breaking the engine on purpose. Removing the floor on damage
+is caught as `a2 has -59 HP, below zero`. Removing the Essence ceiling is
+caught as `b0 holds 1 Essence over a ceiling of 0`, which is the blood cost
+character's path.
 
 ## Where this left the specification
 

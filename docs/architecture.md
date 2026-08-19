@@ -26,7 +26,9 @@ packages/sim/          the rules. depends on nothing.
 │   ├── hash.ts            a state written as one comparable string
 │   └── version.ts         the rules version and the content version
 └── test/
-    └── boundary.test.ts   holds the package to depending on nothing
+    ├── boundary.test.ts   holds the package to depending on nothing
+    ├── invariants.ts      what must be true of every state
+    └── fuzz-source.ts     a whole match from one seed
 ```
 
 Nothing else exists yet. `apps/web`, `packages/content`, and `packages/bot`
@@ -148,6 +150,15 @@ It folds UTF-16 code units rather than calling `TextEncoder`, which is a host
 global. Declaring that global to TypeScript would mean widening the lib until
 `document` is declared too, which is the exact import this package exists to
 refuse.
+
+**A fuzzer checks all of it.** `fuzz-source.ts` builds a match from one seed
+and plays only what `legalMoves` offers. `invariants.ts` holds every state to
+what must be true of it, because asserting that nothing threw would catch
+almost nothing: the ways a rules engine goes wrong are mostly quiet.
+
+Every fuzzed match is replayed from its command log and compared by hash. The
+harness was proved by breaking the engine on purpose rather than by trusting
+that it would have noticed.
 
 **Both are pinned.** The generator's output and a state hash are recorded in
 tests. A change to either invalidates every match recorded before it, so that

@@ -57,6 +57,10 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   carry a `NEXT_PUBLIC_` prefix.
 - [docs/deployment.md](docs/deployment.md), including the one Vercel setting
   that cannot live in this repository.
+- The determinism harness: a seeded fuzzer over random legal commands, state
+  invariants checked after every command, and a replay of every fuzzed match.
+- A responsive interface. The battle screen works on a phone as well as a
+  desktop, from one set of components rather than two.
 
 ### Changed
 
