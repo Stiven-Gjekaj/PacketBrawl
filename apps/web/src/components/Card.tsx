@@ -3,6 +3,11 @@
 import type { CardView } from "../lib/view.ts";
 import { Pips } from "./Pips.tsx";
 
+// The card shares the row rather than owning a fixed width, so a wider window
+// gets a bigger board instead of a bigger margin. The ceiling stops four cards
+// sprawling across an ultrawide screen.
+const SIZE = "max-w-[340px]";
+
 const FRAME: Record<CardView["mood"], string> = {
   acting: "border-2 border-mine bg-mine/12 shadow-[0_0_24px_rgb(74_222_128/0.30)]",
   target: "border-2 border-theirs bg-theirs/16 shadow-[0_0_24px_rgb(251_191_36/0.30)]",
@@ -30,7 +35,7 @@ export function Card({
   const body = (
     <>
       <div
-        className={`portrait flex h-[58px] items-center justify-center border-b font-[family-name:var(--font-display)] text-[21px] ${theirs ? "border-theirs/45" : "border-mine/30"} ${ink}`}
+        className={`portrait flex aspect-[16/7] max-h-[150px] min-h-[58px] items-center justify-center border-b font-[family-name:var(--font-display)] text-[clamp(21px,3vw,34px)] ${theirs ? "border-theirs/45" : "border-mine/30"} ${ink}`}
       >
         {card.initial}
       </div>
@@ -81,13 +86,15 @@ export function Card({
   );
 
   if (!pickable) {
-    return <div className={`w-[196px] ${FRAME[card.mood]}`}>{body}</div>;
+    return (
+      <div className={`min-w-0 flex-1 basis-0 ${SIZE} ${FRAME[card.mood]}`}>{body}</div>
+    );
   }
 
   return (
     <button
       type="button"
-      className={`w-[196px] cursor-pointer text-left ${FRAME[card.mood]}`}
+      className={`min-w-0 flex-1 basis-0 cursor-pointer text-left ${SIZE} ${FRAME[card.mood]}`}
       onClick={onPick}
       onMouseEnter={() => onAim(true)}
       onMouseLeave={() => onAim(false)}

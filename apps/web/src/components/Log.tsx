@@ -9,7 +9,7 @@ import type { LogLine } from "../lib/log.ts";
  */
 export function Log({ lines }: { lines: readonly LogLine[] }) {
   return (
-    <section className="flex min-h-0 grow flex-col border-t border-mine/16 pt-2.5">
+    <section className="flex h-[168px] shrink-0 flex-col border-t border-mine/16 pt-2.5">
       <div className="mb-1.5 text-[9px] tracking-[0.22em] text-faint/50">LOG</div>
       {/* Lines pile up from the bottom, the way a terminal scrolls. With none
           yet there is nothing to pile, so the empty note sits under the label

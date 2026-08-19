@@ -65,8 +65,7 @@ export function BattleScreen() {
   };
 
   return (
-    <div className="flex min-h-dvh items-center justify-center">
-    <main className="scanlines relative flex h-[720px] max-h-dvh w-full max-w-[1200px] flex-col overflow-hidden border border-mine/12 bg-ink">
+    <main className="scanlines relative mx-auto flex h-dvh w-full max-w-[1800px] flex-col overflow-hidden bg-ink">
       <header className="flex h-10 shrink-0 items-center gap-3 border-b border-mine/20 bg-panel px-4.5">
         <span className="text-[12px] font-semibold tracking-[0.18em] text-mine">
           &gt; PACKETBRAWL
@@ -84,6 +83,7 @@ export function BattleScreen() {
         <Rail entries={upcoming} />
 
         <div className="flex min-h-0 grow flex-col px-6 pt-4 pb-4">
+          <div className="flex min-h-0 flex-1 flex-col justify-center">
           <div className="mb-2.5 flex items-center justify-between">
             {header(1)}
             <span className="text-[10px] tracking-[0.14em] text-theirs/55">
@@ -91,7 +91,7 @@ export function BattleScreen() {
             </span>
           </div>
 
-          <div className="flex gap-3.5">
+          <div className="flex justify-center gap-4">
             {side(1).map((card) => (
               <Card
                 key={card.id}
@@ -113,7 +113,7 @@ export function BattleScreen() {
             <div className="h-px grow bg-mine/18" />
           </div>
 
-          <div className="flex gap-3.5">
+          <div className="flex justify-center gap-4">
             {side(0).map((card) => (
               <Card
                 key={card.id}
@@ -126,6 +126,7 @@ export function BattleScreen() {
           </div>
 
           <div className="mt-2.5">{header(0)}</div>
+          </div>
 
           <Log lines={tail(lines, 6)} />
 
@@ -172,6 +173,5 @@ export function BattleScreen() {
         </div>
       </div>
     </main>
-    </div>
   );
 }
