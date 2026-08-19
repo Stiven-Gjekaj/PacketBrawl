@@ -141,6 +141,7 @@ PacketBrawl/
 ├── docs/
 │   ├── architecture.md   how the pieces fit, and why
 │   ├── combat.md         how a hit resolves, and why
+│   ├── deployment.md     where it runs, and the settings not in git
 │   └── milestones.md     the build order, and what changed from the spec
 ├── scripts/
 │   └── check-links.sh    every relative link in every document

@@ -55,6 +55,8 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
   shares the Soultale database and keeps its tables out of `public`.
 - `.env.example`, naming the two public values and the one that must never
   carry a `NEXT_PUBLIC_` prefix.
+- [docs/deployment.md](docs/deployment.md), including the one Vercel setting
+  that cannot live in this repository.
 
 ### Changed
 
@@ -68,6 +70,8 @@ Milestone M0, the skeleton. See [docs/milestones.md](docs/milestones.md).
 
 - Deployments are on. `apps/web` exists and builds, which is the condition the
   block named when it went in.
+- The project targets Node 24 rather than 26. Vercel's newest is 24, so `>=26`
+  failed a deploy while CI was green on 26 at the same moment.
 
 ### Removed
 

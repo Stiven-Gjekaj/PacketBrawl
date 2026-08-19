@@ -15,6 +15,8 @@ the rules engine.
   why the turn order and the state hash work the way they do.
 - [docs/combat.md](docs/combat.md) says how a hit resolves, what an ability
   costs, and why each rule was chosen over the one beside it.
+- [docs/deployment.md](docs/deployment.md) says where it runs, and which
+  settings live in a dashboard rather than in this repository.
 - [docs/milestones.md](docs/milestones.md) holds the build order, and the
   reason behind each decision that shapes it. It also records the six places
   this project now disagrees with its own original specification.
