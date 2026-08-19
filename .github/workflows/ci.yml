@@ -21,7 +21,7 @@ jobs:
         run: bash scripts/check-links.sh
 
   verify:
-    name: Lint, type check, and test
+    name: Lint, type check, test, and build
     runs-on: ubuntu-latest
     steps:
       - name: Check out the code
@@ -58,3 +58,11 @@ jobs:
       # kept separate from anything that draws it.
       - name: Test
         run: pnpm test
+
+      # The build is a check, not a deployment: vercel.json turns git
+      # deployments off. It catches what the other three cannot, which is a
+      # page that type checks and then fails to render on the server.
+      - name: Build the web app
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: pnpm build
