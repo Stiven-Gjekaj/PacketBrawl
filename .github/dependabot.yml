@@ -14,6 +14,20 @@ updates:
     labels: [dependencies]
     commit-message:
       prefix: "deps"
+    ignore:
+      # @types/node stays on the major that matches what actually runs.
+      # .nvmrc says 24 because Vercel's newest runtime is 24.
+      #
+      # A newer major here does not change what runs. It changes what the
+      # compiler believes runs. The newer types are a superset of the older
+      # ones, so every check still passes, and the tests still execute on the
+      # version in .nvmrc. The failure arrives later, when a call that
+      # compiled is missing at run time.
+      #
+      # Raise this when Vercel supports a newer Node, and raise .nvmrc in the
+      # same commit.
+      - dependency-name: "@types/node"
+        update-types: [version-update:semver-major]
 
   - package-ecosystem: github-actions
     directory: /
