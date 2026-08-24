@@ -39,7 +39,7 @@ pnpm install && pnpm dev
   resources, targeting, a state hash, replay, and an event stream.
 - `apps/web` draws it. Four characters a side, a turn forecast rail that is
   exact rather than estimated, and a rolling combat log.
-- 158 tests pass, and no browser appears in any of them.
+- 187 tests pass, and no browser appears in any of them.
 
 **The characters are real.** `packages/content` holds eight from the published
 Soultale chapters, each citing where it came from. The pack is hashed into a
