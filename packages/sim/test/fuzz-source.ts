@@ -38,27 +38,59 @@ function between(rng: Rng, low: number, high: number): [number, Rng] {
   return [low + draw.value, draw.rng];
 }
 
-function randomStats(rng: Rng): [Stats, Rng] {
+/**
+ * A cursor over one generator.
+ *
+ * The generator is pure, so carrying it by hand costs a `let` for every value
+ * drawn and a reassignment for every draw. The cursor holds that one moving
+ * part in a single closure and hands back plain values, which lets each drawn
+ * thing be a `const` and puts one draw on one line.
+ *
+ * The order of the draws is the whole match: change it and every seed builds
+ * a different squad. This moves only where the generator is held, never when
+ * it advances.
+ */
+interface Cursor {
+  /** Draw an integer in [low, high]. */
+  between(low: number, high: number): number;
+  /** Run anything that takes a generator and returns one. */
+  take<T>(step: (rng: Rng) => [T, Rng]): T;
+  /** The generator as it now stands, to hand back to the caller. */
+  readonly rng: Rng;
+}
+
+function cursor(rng: Rng): Cursor {
   let r = rng;
-  let maxHp: number;
-  let attack: number;
-  let defence: number;
-  let magicAttack: number;
-  let magicDefence: number;
-  let speed: number;
-  let critRate: number;
-  let critDamage: number;
-  [maxHp, r] = between(r, 40, 220);
-  [attack, r] = between(r, 20, 180);
-  [defence, r] = between(r, 0, 400);
-  [magicAttack, r] = between(r, 20, 180);
-  [magicDefence, r] = between(r, 0, 400);
+  return {
+    between(low: number, high: number): number {
+      const [value, next] = between(r, low, high);
+      r = next;
+      return value;
+    },
+    take<T>(step: (rng: Rng) => [T, Rng]): T {
+      const [value, next] = step(r);
+      r = next;
+      return value;
+    },
+    get rng(): Rng {
+      return r;
+    },
+  };
+}
+
+function randomStats(rng: Rng): [Stats, Rng] {
+  const draw = cursor(rng);
+  const maxHp = draw.between(40, 220);
+  const attack = draw.between(20, 180);
+  const defence = draw.between(0, 400);
+  const magicAttack = draw.between(20, 180);
+  const magicDefence = draw.between(0, 400);
   // Speed spans a wide range on purpose: the turn order is the part most
   // likely to break, and a fast character against a slow one is where it
   // does. One is the lowest a speed may be.
-  [speed, r] = between(r, 1, 400);
-  [critRate, r] = between(r, 0, 100);
-  [critDamage, r] = between(r, 0, 300);
+  const speed = draw.between(1, 400);
+  const critRate = draw.between(0, 100);
+  const critDamage = draw.between(0, 300);
   return [
     {
       maxHp,
@@ -70,7 +102,7 @@ function randomStats(rng: Rng): [Stats, Rng] {
       critRate,
       critDamage,
     },
-    r,
+    draw.rng,
   ];
 }
 
@@ -79,17 +111,12 @@ function randomAbility(
   id: string,
   slot: Ability["slot"],
 ): [Ability, Rng] {
-  let r = rng;
-  let shapeAt: number;
-  let schoolAt: number;
-  let power: number;
-  let priceKind: number;
-  let amount: number;
-  [shapeAt, r] = between(r, 0, SHAPES.length - 1);
-  [schoolAt, r] = between(r, 0, SCHOOLS.length - 1);
-  [power, r] = between(r, 0, 250);
-  [priceKind, r] = between(r, 0, 3);
-  [amount, r] = between(r, 1, 4);
+  const draw = cursor(rng);
+  const shapeAt = draw.between(0, SHAPES.length - 1);
+  const schoolAt = draw.between(0, SCHOOLS.length - 1);
+  const power = draw.between(0, 250);
+  const priceKind = draw.between(0, 3);
+  const amount = draw.between(1, 4);
 
   const cost =
     slot === "basic"
@@ -112,46 +139,43 @@ function randomAbility(
       school: SCHOOLS[schoolAt] ?? "physical",
       power,
     },
-    r,
+    draw.rng,
   ];
 }
 
 function randomMember(rng: Rng, id: string): [SquadMember, Rng] {
-  let r = rng;
-  let stats: Stats;
-  let ceiling: number;
-  let basic: Ability;
-  let skill: Ability;
-  let soul: Ability;
-  [stats, r] = randomStats(r);
+  const draw = cursor(rng);
+  const stats = draw.take(randomStats);
   // A ceiling of zero is a character who pays only in blood, and it must
   // appear often enough that the fuzzer actually walks that path.
-  [ceiling, r] = between(r, 0, 4);
-  [basic, r] = randomAbility(r, `${id}-basic`, "basic");
-  [skill, r] = randomAbility(r, `${id}-skill`, "skill");
-  [soul, r] = randomAbility(r, `${id}-soul`, "soul");
+  const ceiling = draw.between(0, 4);
+  const basic = draw.take((r) => randomAbility(r, `${id}-basic`, "basic"));
+  const skill = draw.take((r) => randomAbility(r, `${id}-skill`, "skill"));
+  const soul = draw.take((r) => randomAbility(r, `${id}-soul`, "soul"));
   return [
     { id, stats, maxEssence: ceiling, abilities: { basic, skill, soul } },
-    r,
+    draw.rng,
   ];
 }
 
 /** A whole match, decided entirely by one number. */
 export function randomOptions(seed: number): MatchOptions {
-  let r = createRng(seed);
+  const draw = cursor(createRng(seed));
   const squad = (prefix: string): SquadMember[] => {
     const members: SquadMember[] = [];
     for (let index = 0; index < 4; index += 1) {
-      let member: SquadMember;
-      [member, r] = randomMember(r, `${prefix}${index}`);
-      members.push(member);
+      members.push(draw.take((r) => randomMember(r, `${prefix}${index}`)));
     }
     return members;
   };
+  // Left before right: squad "a" draws first, and the squads differ because
+  // of it.
+  const a = squad("a");
+  const b = squad("b");
   return {
     matchId: `fuzz-${seed}`,
     seed,
-    squads: [squad("a"), squad("b")],
+    squads: [a, b],
   };
 }
 
